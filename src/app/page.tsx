@@ -1,14 +1,14 @@
 "use client";
 
 import TerminalLoader from "@/components/TerminalLoader";
-import ThemeToggle from "@/components/theme-toggle";
+import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 
 export default function Home() {
   return (
     <TerminalLoader>
 
-      <ThemeToggle />
+      <Navbar />
 
       <main className="min-h-screen flex flex-col items-center justify-center">
 

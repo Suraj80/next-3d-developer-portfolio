@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+src/components/BackgroundGrid.tsx
+src/components/CyberpunkGrid.tsx
+src/components/MatrixRain.tsx
