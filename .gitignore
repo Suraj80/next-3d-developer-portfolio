@@ -41,5 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 
-src/components/CyberpunkGrid.tsx
 src/components/MatrixRain.tsx
+src/components/BackgroundGrid.tsx
+Project_audit_report.md

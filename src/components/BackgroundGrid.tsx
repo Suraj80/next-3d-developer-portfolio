@@ -53,39 +53,19 @@ export default function BackgroundGrid() {
             {/* GRID */}
             <div
                 ref={gridRef}
-                className="
-          absolute inset-[-100px]
-          [background-size:40px_40px]
-          [background-image:
-            linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),
-            linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)
-          ]
-          dark:[background-image:
-            linear-gradient(to_right,rgba(255,255,255,0.07)_1px,transparent_1px),
-            linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)
-          ]
-          transition-transform
-        "
+                className="absolute inset-[-100px] [background-size:40px_40px] [background-image:linear-gradient(to_right,rgba(0,0,0,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.06)_1px,transparent_1px)] dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] transition-transform"
             />
 
             {/* GLOW 1 */}
             <div
                 ref={glow1}
-                className="
-          absolute -top-40 -left-40 w-[650px] h-[650px]
-          bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20
-          rounded-full blur-3xl
-        "
+                className="absolute -top-40 -left-40 w-[650px] h-[650px] bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl"
             />
 
             {/* GLOW 2 */}
             <div
                 ref={glow2}
-                className="
-          absolute -bottom-40 -right-40 w-[650px] h-[650px]
-          bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20
-          rounded-full blur-3xl
-        "
+                className="absolute -bottom-40 -right-40 w-[650px] h-[650px] bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 rounded-full blur-3xl"
             />
 
             {/* FADE MASK */}

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import RobotFollower from "./RobotFollower";
 
 const roles = [
@@ -15,6 +15,18 @@ export default function Hero() {
     const [text, setText] = useState("");
     const [roleIndex, setRoleIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
+
+    const sectionRef = useRef<HTMLElement>(null);
+
+    // Parallax scroll setup
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start start", "end start"]
+    });
+
+    // Parallax transforms - subtle movement
+    const glowY = useTransform(scrollYProgress, [0, 1], [0, 150]); // Background glow moves slower
+    const robotY = useTransform(scrollYProgress, [0, 1], [0, 100]); // Robot moves slower than text
 
     // Typing effect logic - preserved exactly as before
     useEffect(() => {
@@ -38,10 +50,16 @@ export default function Hero() {
     }, [charIndex, roleIndex]);
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 sm:py-16 overflow-hidden">
+        <section
+            ref={sectionRef}
+            className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 sm:py-16 overflow-hidden"
+        >
 
-            {/* Subtle radial glow - responsive size */}
-            <div className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] bg-cyan-500/20 blur-[100px] sm:blur-[140px] rounded-full top-1/3 left-1/2 -translate-x-1/2 -z-10" />
+            {/* Subtle radial glow with parallax - responsive size */}
+            <motion.div
+                style={{ y: glowY }}
+                className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] bg-cyan-500/20 blur-[100px] sm:blur-[140px] rounded-full top-1/3 left-1/2 -translate-x-1/2 -z-10"
+            />
 
             {/* Responsive Grid Layout */}
             <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center z-10">
@@ -54,7 +72,7 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 60 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.9 }}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-tight"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-tight whitespace-nowrap"
                     >
                         Suraj Jangavali
                     </motion.h1>
@@ -97,10 +115,11 @@ export default function Hero() {
                     </motion.div>
                 </div>
 
-                {/* Right Side: 3D Robot - Order 1 on mobile, 2 on desktop */}
+                {/* Right Side: 3D Robot with parallax - Order 1 on mobile, 2 on desktop */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
+                    style={{ y: robotY }}
                     transition={{ duration: 1.5, delay: 0.5 }}
                     className="order-1 lg:order-2 flex justify-center lg:justify-end w-full"
                 >

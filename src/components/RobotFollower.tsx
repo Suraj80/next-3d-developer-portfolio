@@ -1,9 +1,12 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { useGLTF, PerspectiveCamera } from "@react-three/drei";
+import { useRef, Suspense } from "react";
 import * as THREE from "three";
+
+// Preload the GLB model for better performance and caching
+useGLTF.preload("/models/robot.glb");
 
 function Robot() {
     const ref = useRef<THREE.Group>(null);
@@ -21,6 +24,16 @@ function Robot() {
     );
 }
 
+// Loading fallback component
+function Loader() {
+    return (
+        <mesh>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color="#00ffff" wireframe />
+        </mesh>
+    );
+}
+
 export default function RobotFollower() {
     return (
         <div className="w-full max-w-[280px] h-[380px] sm:max-w-[350px] sm:h-[350px] md:max-w-[450px] md:h-[450px] lg:max-w-[550px] lg:h-[550px] mx-auto mt-5">
@@ -34,16 +47,10 @@ export default function RobotFollower() {
                 <directionalLight position={[-3, -3, -3]} intensity={0.5} />
                 <pointLight position={[0, 2, 0]} intensity={0.8} color="#00ffff" />
 
-                {/* 3D Robot Model */}
-                <Robot />
-
-                {/* Optional: Enable user controls for debugging */}
-                {/* <OrbitControls
-                    enableZoom={false}
-                    enablePan={false}
-                    minPolarAngle={Math.PI / 3}
-                    maxPolarAngle={Math.PI / 1.5}
-                /> */}
+                {/* 3D Robot Model with Suspense for loading state */}
+                <Suspense fallback={<Loader />}>
+                    <Robot />
+                </Suspense>
             </Canvas>
         </div>
     );

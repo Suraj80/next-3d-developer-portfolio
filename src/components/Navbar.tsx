@@ -33,27 +33,10 @@ export default function Navbar() {
             {/* FLOATING NAVBAR */}
             <header className="fixed top-6 left-1/2 -translate-x-1/2 z-40 w-full px-4 pointer-events-none">
                 <nav
-                    className="
-          pointer-events-auto
-          mx-auto max-w-5xl
-          flex items-center justify-between
-          px-6 py-3
-
-          rounded-full
-          border
-
-          backdrop-blur-xl
-          bg-white/40 dark:bg-black/40
-          border-white/20 dark:border-white/10
-
-          shadow-[0_8px_30px_rgba(0,0,0,0.25)]
-          relative overflow-hidden
-        "
+                    className="pointer-events-auto mx-auto max-w-5xl flex items-center justify-between px-6 py-3 rounded-full border backdrop-blur-xl bg-white/40 dark:bg-black/40 border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] relative overflow-hidden"
                 >
                     {/* GRADIENT GLOW EDGES */}
-                    <div className="absolute inset-0 rounded-full pointer-events-none
-              bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20
-              blur-xl opacity-60" />
+                    <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-xl opacity-60" />
 
                     {/* LOGO */}
                     <div className="font-bold tracking-tight text-lg relative z-10">
@@ -75,7 +58,7 @@ export default function Navbar() {
                     {/* RIGHT */}
                     <div className="flex items-center gap-2 relative z-10">
 
-                        <ThemeToggle inline />
+                        {/* <ThemeToggle inline /> */}
 
                         {/* MOBILE BUTTON */}
                         <button
@@ -89,11 +72,7 @@ export default function Navbar() {
 
                 {/* MOBILE GLASS MENU */}
                 {mobileOpen && (
-                    <div className="md:hidden mt-3 mx-auto max-w-5xl rounded-2xl border
-              backdrop-blur-xl
-              bg-white/40 dark:bg-black/40
-              border-white/20 dark:border-white/10
-              shadow-xl p-4 flex flex-col gap-4">
+                    <div className="md:hidden mt-3 mx-auto max-w-5xl rounded-2xl border backdrop-blur-xl bg-white/40 dark:bg-black/40 border-white/20 dark:border-white/10 shadow-xl p-4 flex flex-col gap-4">
 
                         {LINKS.map((l) => (
                             <button
@@ -102,10 +81,9 @@ export default function Navbar() {
                                     setActive(l);
                                     setMobileOpen(false);
                                 }}
-                                className={`text-left px-3 py-2 rounded-lg transition
-                  ${active === l
-                                        ? "bg-white/60 dark:bg-white/20 font-semibold"
-                                        : "hover:bg-white/40 dark:hover:bg-white/10"
+                                className={`text-left px-3 py-2 rounded-lg transition ${active === l
+                                    ? "bg-white/60 dark:bg-white/20 font-semibold"
+                                    : "hover:bg-white/40 dark:hover:bg-white/10"
                                     }`}
                             >
                                 {l}
@@ -162,8 +140,7 @@ function MagneticLink({
 
             {/* ACTIVE UNDERLINE ANIMATION */}
             <span
-                className={`absolute left-0 -bottom-1 h-[2px] bg-current transition-all duration-300
-        ${active ? "w-full" : "w-0 group-hover:w-full"}`}
+                className={`absolute left-0 -bottom-1 h-[2px] bg-current transition-all duration-300 ${active ? "w-full" : "w-0 group-hover:w-full"}`}
             />
         </button>
     );
