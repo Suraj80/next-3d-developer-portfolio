@@ -2,25 +2,17 @@
 
 import TerminalLoader from "@/components/TerminalLoader";
 import Navbar from "@/components/Navbar";
-import { motion } from "framer-motion";
+import BackgroundGrid from "@/components/BackgroundGrid";
+import Hero from "@/components/Hero";
 
 export default function Home() {
   return (
     <TerminalLoader>
-
+      <BackgroundGrid />
       <Navbar />
 
-      <main className="min-h-screen flex flex-col items-center justify-center">
-
-        <motion.h1
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="text-6xl font-bold"
-        >
-          Suraj
-        </motion.h1>
-
+      <main className="relative z-10">
+        <Hero />
       </main>
 
     </TerminalLoader>
