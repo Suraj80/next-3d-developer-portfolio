@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import Navbar from "@/components/Navbar";
 import CyberpunkGrid from "@/components/CyberpunkGrid";
+import TechStack from "@/components/TechStack";
 
 // Dynamic imports for heavy components (contains 3D models and animations)
 const Hero = dynamic(() => import('@/components/Hero'), {
@@ -49,6 +50,7 @@ export default function Home() {
       <main className="relative z-10">
         <Hero />
         <About />
+        <TechStack />
       </main>
     </>
   );

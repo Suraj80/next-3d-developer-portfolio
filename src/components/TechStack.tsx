@@ -1,0 +1,217 @@
+"use client";
+
+import { useState, useRef } from "react";
+import {
+    motion,
+    AnimatePresence,
+    useScroll,
+    useTransform,
+} from "framer-motion";
+import {
+    SiNextdotjs,
+    SiReact,
+    SiTypescript,
+    SiTailwindcss,
+    SiNodedotjs,
+    SiPhp,
+    SiMysql,
+    SiMongodb,
+    SiDocker,
+    SiGit,
+    SiVercel,
+} from "react-icons/si";
+
+type Tech = {
+    name: string;
+    category: string;
+    level: string;
+    icon: React.ReactNode;
+};
+
+const techStack: Tech[] = [
+    { name: "Next.js", category: "Frontend", level: "Advanced", icon: <SiNextdotjs /> },
+    { name: "React", category: "Frontend", level: "Advanced", icon: <SiReact /> },
+    { name: "TypeScript", category: "Frontend", level: "Advanced", icon: <SiTypescript /> },
+    { name: "Tailwind", category: "Frontend", level: "Advanced", icon: <SiTailwindcss /> },
+
+    { name: "Node.js", category: "Backend", level: "Intermediate", icon: <SiNodedotjs /> },
+    { name: "PHP", category: "Backend", level: "Advanced", icon: <SiPhp /> },
+
+    { name: "MySQL", category: "Database", level: "Advanced", icon: <SiMysql /> },
+    { name: "MongoDB", category: "Database", level: "Intermediate", icon: <SiMongodb /> },
+
+    { name: "Docker", category: "Tools", level: "Intermediate", icon: <SiDocker /> },
+    { name: "Git", category: "Tools", level: "Advanced", icon: <SiGit /> },
+    { name: "Vercel", category: "Tools", level: "Advanced", icon: <SiVercel /> },
+];
+
+const categories = ["All", "Frontend", "Backend", "Database", "Tools"];
+
+export default function TechStack() {
+    const [active, setActive] = useState("All");
+    const sectionRef = useRef<HTMLElement>(null);
+
+    /* ============================= */
+    /*       Parallax Background     */
+    /* ============================= */
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"],
+    });
+
+    const glow1Y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+    const glow2Y = useTransform(scrollYProgress, [0, 1], [-80, 80]);
+
+    const filtered =
+        active === "All"
+            ? techStack
+            : techStack.filter((tech) => tech.category === active);
+
+    return (
+        <section
+            ref={sectionRef}
+            id="tech-stack"
+            className="relative py-28 px-6 md:px-16 text-white overflow-hidden"
+        >
+            {/* Background Glow */}
+            <motion.div
+                style={{ y: glow1Y }}
+                className="absolute top-1/4 left-1/4 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[150px] rounded-full pointer-events-none"
+            />
+
+            <motion.div
+                style={{ y: glow2Y }}
+                className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[150px] rounded-full pointer-events-none"
+            />
+
+            <div className="max-w-7xl mx-auto relative z-10">
+                {/* Title */}
+                <motion.h2
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
+                >
+                    Tech Stack
+                </motion.h2>
+
+                {/* Filter Buttons */}
+                <div className="flex justify-center gap-10 mb-16 relative">
+                    {categories.map((cat) => (
+                        <div key={cat} className="relative">
+                            <button
+                                onClick={() => setActive(cat)}
+                                className={`text-sm transition ${active === cat
+                                    ? "text-white"
+                                    : "text-gray-400 hover:text-white"
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+
+                            {active === cat && (
+                                <motion.div
+                                    layoutId="underline"
+                                    className="absolute -bottom-2 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
+                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                />
+                            )}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Grid */}
+                <motion.div
+                    layout
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8"
+                >
+                    <AnimatePresence mode="sync">
+                        {filtered.map((tech, index) => (
+                            <TechCard key={tech.name} tech={tech} index={index} />
+                        ))}
+                    </AnimatePresence>
+                </motion.div>
+            </div>
+        </section>
+    );
+}
+
+/* ============================= */
+/*       Premium Tech Card       */
+/* ============================= */
+
+function TechCard({ tech, index }: { tech: Tech; index: number }) {
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const el = cardRef.current;
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateX = ((y - rect.height / 2) / rect.height) * 8;
+        const rotateY = ((x - rect.width / 2) / rect.width) * -8;
+
+        el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    };
+
+    const resetTilt = () => {
+        if (cardRef.current) {
+            cardRef.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+        }
+    };
+
+    return (
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{
+                duration: 0.4,
+                delay: index * 0.05,
+                layout: { duration: 0.3 }
+            }}
+            className="relative group perspective-[1000px]"
+        >
+            {/* Floating Glow Pulse */}
+            <motion.div
+                animate={{ opacity: [0.1, 0.25, 0.1] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 blur-2xl opacity-20"
+            />
+
+            {/* Gradient Border */}
+            <div className="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 opacity-0 group-hover:opacity-100 transition duration-500">
+                <div className="w-full h-full rounded-2xl bg-black" />
+            </div>
+
+            {/* Card */}
+            <motion.div
+                ref={cardRef}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={resetTilt}
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(139,92,246,0.3)] min-h-[160px]"
+            >
+                <div className="text-5xl mb-4 text-gray-300 group-hover:text-purple-400 transition duration-300">
+                    {tech.icon}
+                </div>
+
+                <p className="text-sm text-gray-400 group-hover:text-white transition duration-300 font-medium">
+                    {tech.name}
+                </p>
+
+                {/* Tooltip */}
+                <div className="absolute bottom-3 opacity-0 group-hover:opacity-100 transition text-xs text-purple-400 font-medium">
+                    {tech.level}
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+}
