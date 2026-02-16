@@ -6,6 +6,7 @@ import CyberpunkGrid from "@/components/CyberpunkGrid";
 import TechStack from "@/components/TechStack";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
+import Contact from "@/components/Contact";
 
 // Dynamic imports for heavy components (contains 3D models and animations)
 const Hero = dynamic(() => import('@/components/Hero'), {
@@ -55,6 +56,7 @@ export default function Home() {
         <TechStack />
         <Projects />
         <Experience />
+        <Contact />
       </main>
     </>
   );
