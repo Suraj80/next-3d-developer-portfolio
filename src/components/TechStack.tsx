@@ -97,29 +97,51 @@ export default function TechStack() {
                     Tech Stack
                 </motion.h2>
 
-                {/* Filter Buttons */}
-                <div className="flex justify-center gap-10 mb-16 relative">
-                    {categories.map((cat) => (
-                        <div key={cat} className="relative">
-                            <button
-                                onClick={() => setActive(cat)}
-                                className={`text-sm transition ${active === cat
-                                    ? "text-white"
-                                    : "text-gray-400 hover:text-white"
-                                    }`}
-                            >
-                                {cat}
-                            </button>
+                {/* Filter Buttons - Enhanced & Responsive */}
+                <div className="mb-16 sm:mb-20">
+                    <div className="flex justify-center">
+                        <div className="inline-flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6 p-2 sm:p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
+                            {categories.map((cat) => (
+                                <div key={cat} className="relative">
+                                    <button
+                                        onClick={() => setActive(cat)}
+                                        className={`relative px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium rounded-xl transition-all duration-300 ${active === cat
+                                                ? "text-white bg-white/10"
+                                                : "text-gray-400 hover:text-white hover:bg-white/5"
+                                            }`}
+                                    >
+                                        <span className="relative z-10">{cat}</span>
 
-                            {active === cat && (
-                                <motion.div
-                                    layoutId="underline"
-                                    className="absolute -bottom-2 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
-                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                                />
-                            )}
+                                        {/* Active Background */}
+                                        {active === cat && (
+                                            <motion.div
+                                                layoutId="activeCategory"
+                                                className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-white/10"
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 380,
+                                                    damping: 30,
+                                                }}
+                                            />
+                                        )}
+                                    </button>
+
+                                    {/* Animated Underline */}
+                                    {active === cat && (
+                                        <motion.div
+                                            layoutId="underline"
+                                            className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 380,
+                                                damping: 30,
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
                 </div>
 
                 {/* Grid */}

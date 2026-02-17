@@ -1,147 +1,169 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import ThemeToggle from "./theme-toggle";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-const LINKS = ["Home", "Projects", "Skills", "Contact"];
+const SECTIONS = [
+    { id: "hero", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "tech-stack", label: "Tech Stack" },
+    { id: "projects", label: "Projects" },
+    { id: "experience", label: "Experience" },
+    { id: "contributions", label: "Contributions" },
+    { id: "contact", label: "Contact" },
+];
 
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [active, setActive] = useState("Home");
-    const [progress, setProgress] = useState(0);
+    const [activeSection, setActiveSection] = useState("hero");
+    const [scrollProgress, setScrollProgress] = useState(0);
 
-    // scroll progress bar
+    // Scroll progress bar
     useEffect(() => {
-        const update = () => {
+        const updateProgress = () => {
             const h = document.documentElement;
-            const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
-            setProgress(scrolled * 100);
+            const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+            setScrollProgress(scrolled * 100);
         };
 
-        window.addEventListener("scroll", update);
-        return () => window.removeEventListener("scroll", update);
+        window.addEventListener("scroll", updateProgress);
+        return () => window.removeEventListener("scroll", updateProgress);
     }, []);
+
+    // Active section detection
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            rootMargin: "-50% 0px -50% 0px",
+            threshold: 0,
+        };
+
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        SECTIONS.forEach(({ id }) => {
+            const element = document.getElementById(id);
+            if (element) observer.observe(element);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Smooth scroll to section
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+            setMobileOpen(false);
+        }
+    };
 
     return (
         <>
             {/* SCROLL PROGRESS BAR */}
-            <div
-                className="fixed top-0 left-0 h-[3px] z-50 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all"
-                style={{ width: `${progress}%` }}
+            <motion.div
+                className="fixed top-0 left-0 h-[3px] z-50 bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500"
+                style={{ width: `${scrollProgress}%` }}
             />
 
             {/* FLOATING NAVBAR */}
             <header className="fixed top-6 left-1/2 -translate-x-1/2 z-40 w-full px-4 pointer-events-none">
-                <nav
-                    className="pointer-events-auto mx-auto max-w-5xl flex items-center justify-between px-6 py-3 rounded-full border backdrop-blur-xl bg-white/40 dark:bg-black/40 border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] relative overflow-hidden"
-                >
-                    {/* GRADIENT GLOW EDGES */}
-                    <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-xl opacity-60" />
+                <nav className="pointer-events-auto mx-auto max-w-6xl flex items-center justify-between px-6 py-3.5 rounded-full border backdrop-blur-xl bg-black/40 border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.3)] relative overflow-hidden">
+                    {/* GRADIENT GLOW */}
+                    <div className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-r from-purple-500/10 via-cyan-500/10 to-pink-500/10 blur-xl opacity-60" />
 
                     {/* LOGO */}
-                    <div className="font-bold tracking-tight text-lg relative z-10">
+                    <button
+                        onClick={() => scrollToSection("hero")}
+                        className="font-bold tracking-tight text-lg relative z-10 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-transform"
+                    >
                         Suraj.dev
-                    </div>
+                    </button>
 
                     {/* DESKTOP LINKS */}
-                    <div className="hidden md:flex gap-8 relative z-10">
-                        {LINKS.map((l) => (
-                            <MagneticLink
-                                key={l}
-                                label={l}
-                                active={active === l}
-                                onClick={() => setActive(l)}
-                            />
-                        ))}
-                    </div>
-
-                    {/* RIGHT */}
-                    <div className="flex items-center gap-2 relative z-10">
-
-                        {/* <ThemeToggle inline /> */}
-
-                        {/* MOBILE BUTTON */}
-                        <button
-                            onClick={() => setMobileOpen(!mobileOpen)}
-                            className="md:hidden px-3 py-2 rounded-lg bg-white/30 dark:bg-white/10"
-                        >
-                            ☰
-                        </button>
-                    </div>
-                </nav>
-
-                {/* MOBILE GLASS MENU */}
-                {mobileOpen && (
-                    <div className="md:hidden mt-3 mx-auto max-w-5xl rounded-2xl border backdrop-blur-xl bg-white/40 dark:bg-black/40 border-white/20 dark:border-white/10 shadow-xl p-4 flex flex-col gap-4">
-
-                        {LINKS.map((l) => (
+                    <div className="hidden lg:flex gap-1 relative z-10">
+                        {SECTIONS.map(({ id, label }) => (
                             <button
-                                key={l}
-                                onClick={() => {
-                                    setActive(l);
-                                    setMobileOpen(false);
-                                }}
-                                className={`text-left px-3 py-2 rounded-lg transition ${active === l
-                                    ? "bg-white/60 dark:bg-white/20 font-semibold"
-                                    : "hover:bg-white/40 dark:hover:bg-white/10"
+                                key={id}
+                                onClick={() => scrollToSection(id)}
+                                className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${activeSection === id
+                                    ? "text-white bg-white/10"
+                                    : "text-gray-400 hover:text-white hover:bg-white/5"
                                     }`}
                             >
-                                {l}
+                                {activeSection === id && (
+                                    <motion.div
+                                        layoutId="activeSection"
+                                        className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-white/10"
+                                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                    />
+                                )}
+                                <span className="relative z-10">{label}</span>
                             </button>
                         ))}
                     </div>
+
+                    {/* MOBILE BUTTON */}
+                    <button
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        className="lg:hidden px-3 py-2 rounded-lg bg-white/10 border border-white/10 hover:bg-white/20 transition relative z-10"
+                        aria-label="Toggle menu"
+                    >
+                        <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            {mobileOpen ? (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            ) : (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            )}
+                        </svg>
+                    </button>
+                </nav>
+
+                {/* MOBILE MENU */}
+                {mobileOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="lg:hidden mt-3 mx-auto max-w-6xl rounded-2xl border backdrop-blur-xl bg-black/40 border-white/10 shadow-xl p-4 flex flex-col gap-2"
+                    >
+                        {SECTIONS.map(({ id, label }) => (
+                            <button
+                                key={id}
+                                onClick={() => scrollToSection(id)}
+                                className={`text-left px-4 py-3 rounded-xl transition-all ${activeSection === id
+                                    ? "bg-white/10 text-white font-semibold border border-white/10"
+                                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                                    }`}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </motion.div>
                 )}
             </header>
         </>
-    );
-}
-
-/* ===========================
-   MAGNETIC HOVER LINK
-=========================== */
-
-function MagneticLink({
-    label,
-    active,
-    onClick,
-}: {
-    label: string;
-    active: boolean;
-    onClick: () => void;
-}) {
-    const ref = useRef<HTMLButtonElement>(null);
-
-    function handleMove(e: React.MouseEvent) {
-        const el = ref.current;
-        if (!el) return;
-
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-    }
-
-    function reset() {
-        if (ref.current) ref.current.style.transform = "";
-    }
-
-    return (
-        <button
-            ref={ref}
-            onMouseMove={handleMove}
-            onMouseLeave={reset}
-            onClick={onClick}
-            className="relative px-1 py-1 transition-transform duration-150"
-        >
-            <span className="opacity-90 hover:opacity-100">
-                {label}
-            </span>
-
-            {/* ACTIVE UNDERLINE ANIMATION */}
-            <span
-                className={`absolute left-0 -bottom-1 h-[2px] bg-current transition-all duration-300 ${active ? "w-full" : "w-0 group-hover:w-full"}`}
-            />
-        </button>
     );
 }

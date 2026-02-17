@@ -52,6 +52,7 @@ export default function Hero() {
     return (
         <section
             ref={sectionRef}
+            id="hero"
             className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 sm:py-16 overflow-hidden"
         >
 
