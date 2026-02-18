@@ -59,7 +59,7 @@ export default function Hero() {
             {/* Subtle radial glow with parallax - responsive size */}
             <motion.div
                 style={{ y: glowY }}
-                className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] bg-cyan-500/20 blur-[100px] sm:blur-[140px] rounded-full top-1/3 left-1/2 -translate-x-1/2 -z-10"
+                className="absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[600px] lg:h-[600px] bg-cyan-500/20 blur-[80px] rounded-full top-1/3 left-1/2 -translate-x-1/2 -z-10 will-change-transform"
             />
 
             {/* Responsive Grid Layout */}

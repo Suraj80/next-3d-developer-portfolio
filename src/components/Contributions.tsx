@@ -56,14 +56,14 @@ function ContributionCard({
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, scale: 0.97 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
-                duration: 0.6,
-                delay: index * 0.1,
+                duration: 0.4,
+                delay: index * 0.06,
                 ease: [0.25, 0.4, 0.25, 1],
             }}
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-100px" }}
             className="group relative h-full"
         >
             {/* Animated Glow Background */}
@@ -117,8 +117,8 @@ function ContributionCard({
                                 key={i}
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: index * 0.1 + i * 0.05 }}
-                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.06 + i * 0.03 }}
+                                viewport={{ once: true, margin: "-100px" }}
                                 whileHover={{ scale: 1.1, y: -2 }}
                                 className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:border-purple-400/30 hover:text-white transition-all duration-300 cursor-default"
                             >
@@ -178,13 +178,13 @@ export default function Contributions() {
             {/* Subtle Background Glow 1 - Purple */}
             <motion.div
                 style={{ y: glow1Y, opacity: glow1Opacity }}
-                className="absolute top-1/3 left-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[100px] rounded-full pointer-events-none"
+                className="absolute top-1/3 left-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             {/* Subtle Background Glow 2 - Cyan */}
             <motion.div
                 style={{ y: glow2Y, opacity: glow2Opacity }}
-                className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[100px] rounded-full pointer-events-none"
+                className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             <div className="max-w-7xl mx-auto relative z-10">
@@ -193,14 +193,14 @@ export default function Contributions() {
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="text-center mb-16 sm:mb-20 lg:mb-24"
                 >
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
                     >
                         Open Source Contributions
@@ -209,8 +209,8 @@ export default function Contributions() {
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.15 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto"
                     >
                         Contributing to the ecosystem that powers modern web development

@@ -35,21 +35,21 @@ export default function TechStack() {
                     {/* Background Glow */}
                     <motion.div
                         style={{ y: glow1Y }}
-                        className="absolute top-1/4 left-1/4 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[150px] rounded-full pointer-events-none"
+                        className="absolute top-1/4 left-1/4 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
                     />
 
                     <motion.div
                         style={{ y: glow2Y }}
-                        className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[150px] rounded-full pointer-events-none"
+                        className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
                     />
 
                     <div className="max-w-7xl mx-auto relative z-10">
                         {/* Title */}
                         <motion.h2
-                            initial={{ opacity: 0, y: 40 }}
+                            initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                            viewport={{ once: true, margin: "-100px" }}
                             className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
                         >
                             Tech Stack
@@ -150,13 +150,13 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: 12, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            exit={{ opacity: 0, y: -12, scale: 0.95 }}
             transition={{
-                duration: 0.4,
-                delay: index * 0.05,
-                layout: { duration: 0.3 }
+                duration: 0.3,
+                delay: index * 0.04,
+                layout: { duration: 0.25 }
             }}
             className="relative group perspective-[1000px]"
         >

@@ -20,10 +20,10 @@ export default function Projects() {
 
                 {/* Section Title */}
                 <motion.h2
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="text-5xl font-bold text-center mb-24 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
                 >
                     Projects
@@ -37,8 +37,8 @@ export default function Projects() {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="relative mb-32 rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl"
                     >
                         <div className="grid md:grid-cols-2 gap-0">
@@ -111,10 +111,10 @@ export default function Projects() {
                     {others.map((project, index) => (
                         <motion.div
                             key={project.title}
-                            initial={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: index * 0.06 }}
+                            viewport={{ once: true, margin: "-100px" }}
                             whileHover={{ scale: 1.03 }}
                             className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl group"
                         >

@@ -116,16 +116,16 @@ export default function About() {
             {/* Background Glow with parallax */}
             <motion.div
                 style={{ y: glowY }}
-                className="absolute top-1/2 left-1/2 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[150px] rounded-full pointer-events-none"
+                className="absolute top-1/2 left-1/2 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">
                 {/* Title */}
                 <motion.h2
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-12 sm:mb-16 lg:mb-24 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
                 >
                     About Me
@@ -134,11 +134,11 @@ export default function About() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20 lg:gap-28 xl:gap-32 items-center">
                     {/* LEFT SIDE - Profile Image with parallax */}
                     <motion.div
-                        initial={{ opacity: 0, x: -40 }}
+                        initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         style={{ y: imageY }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="relative flex justify-center lg:justify-end perspective-[1000px]"
                     >
                         {/* Animated Glow */}
@@ -194,10 +194,10 @@ export default function About() {
 
                     {/* RIGHT SIDE - Content */}
                     <motion.div
-                        initial={{ opacity: 0, x: 40 }}
+                        initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="space-y-6 lg:pl-8 xl:pl-12"
                     >
                         <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed">

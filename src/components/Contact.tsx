@@ -29,22 +29,22 @@ export default function Contact() {
             {/* Background Glow 1 - Purple */}
             <motion.div
                 style={{ y: glow1Y }}
-                className="absolute top-1/4 left-1/4 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[150px] rounded-full pointer-events-none"
+                className="absolute top-1/4 left-1/4 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             {/* Background Glow 2 - Cyan */}
             <motion.div
                 style={{ y: glow2Y }}
-                className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[150px] rounded-full pointer-events-none"
+                className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">
                 {/* Title */}
                 <motion.h2
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-4 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
                 >
                     Let's Build Something
@@ -53,8 +53,8 @@ export default function Contact() {
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="text-center text-xl sm:text-2xl text-gray-400 mb-12 sm:mb-16 lg:mb-20"
                 >
                     Impactful Together
@@ -66,10 +66,10 @@ export default function Contact() {
                     {/* ============================= */}
 
                     <motion.div
-                        initial={{ opacity: 0, x: -60 }}
+                        initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.7 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="space-y-8"
                     >
                         {/* Description */}
@@ -134,7 +134,7 @@ export default function Contact() {
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             transition={{ delay: 0.4 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, margin: "-100px" }}
                             className="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/30"
                         >
                             <motion.div
@@ -159,10 +159,10 @@ export default function Contact() {
                     {/* ============================= */}
 
                     <motion.div
-                        initial={{ opacity: 0, x: 60 }}
+                        initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.7 }}
-                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true, margin: "-100px" }}
                     >
                         {/* Gradient Border Container */}
                         <div className="relative p-[1px] rounded-3xl bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30">

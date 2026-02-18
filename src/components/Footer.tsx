@@ -27,20 +27,20 @@ export default function Footer() {
             {/* Parallax Background Glows */}
             <motion.div
                 style={{ y: glow1Y }}
-                className="absolute top-1/2 left-1/4 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[120px] rounded-full pointer-events-none"
+                className="absolute top-1/2 left-1/4 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
             <motion.div
                 style={{ y: glow2Y }}
-                className="absolute bottom-1/2 right-1/4 w-[500px] h-[500px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[120px] rounded-full pointer-events-none"
+                className="absolute bottom-1/2 right-1/4 w-[500px] h-[500px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             <div className="max-w-7xl mx-auto relative z-10">
                 {/* Top Section */}
                 <motion.div
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 mb-12"
                 >
                     {/* Brand */}
@@ -88,8 +88,8 @@ export default function Footer() {
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.15 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     className="flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-gray-500"
                 >
                     <p className="text-center sm:text-left">

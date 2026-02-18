@@ -10,29 +10,56 @@ export default function CyberpunkGrid() {
     let mouseY = 0;
     let currentX = 0;
     let currentY = 0;
+    let animationId: number;
 
-    const move = (e: MouseEvent) => {
-      mouseX = (e.clientX - window.innerWidth / 2) / 50;
-      mouseY = (e.clientY - window.innerHeight / 2) / 50;
+    // Throttle helper — fires at most once per `limit` ms
+    const throttle = <T extends unknown[]>(
+      fn: (...args: T) => void,
+      limit: number
+    ) => {
+      let lastCall = 0;
+      return (...args: T) => {
+        const now = Date.now();
+        if (now - lastCall >= limit) {
+          lastCall = now;
+          fn(...args);
+        }
+      };
     };
 
+    // ✅ Throttled to ~60fps — no longer fires on every pixel of movement
+    const move = throttle((e: MouseEvent) => {
+      mouseX = (e.clientX - window.innerWidth / 2) / 50;
+      mouseY = (e.clientY - window.innerHeight / 2) / 50;
+    }, 16);
+
     window.addEventListener("mousemove", move);
+
+    // ✅ Set will-change once so the browser promotes the layer upfront
+    if (gridRef.current) {
+      gridRef.current.style.willChange = "transform";
+    }
 
     const animate = () => {
       currentX += (mouseX - currentX) * 0.06;
       currentY += (mouseY - currentY) * 0.06;
 
+      // ✅ translate3d triggers GPU compositing instead of CPU repaints
       if (gridRef.current) {
         gridRef.current.style.transform =
-          `translate(${currentX}px, ${currentY}px)`;
+          `translate3d(${currentX}px, ${currentY}px, 0)`;
       }
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationId = requestAnimationFrame(animate);
 
-    return () => window.removeEventListener("mousemove", move);
+    // ✅ Cancel both the rAF loop and the event listener on unmount
+    return () => {
+      window.removeEventListener("mousemove", move);
+      cancelAnimationFrame(animationId);
+    };
   }, []);
 
   return (
