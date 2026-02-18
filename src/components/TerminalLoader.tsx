@@ -2,17 +2,9 @@
 
 import { useEffect, useRef, useState, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import useAudioUnlock from "@/hook/useAudioUnlock";
+import useAudioUnlock from "@/hooks/useAudioUnlock";
 
-const LINES = [
-    "[0.21s] initializing system...",
-    "[0.48s] loading modules...",
-    "[0.92s] checking GPU...",
-    "[1.34s] fetching developer profile...",
-    "[1.82s] compiling portfolio...",
-    "[2.41s] starting services...",
-    "[2.90s] welcome Suraj",
-];
+import { TERMINAL_LINES as LINES } from "@/data/terminal";
 
 export default function TerminalLoader({
     children,

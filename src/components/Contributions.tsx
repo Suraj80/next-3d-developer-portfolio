@@ -4,70 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { FiGithub, FiExternalLink } from "react-icons/fi";
 import { useRef } from "react";
 
-type ContributionType = "Bug Fix" | "Feature" | "Docs" | "Refactor";
-
-type Contribution = {
-    repo: string;
-    description: string;
-    type: ContributionType;
-    tech: string[];
-    pr?: string;
-    link: string;
-};
-
-const contributions: Contribution[] = [
-    {
-        repo: "vercel/next.js",
-        description:
-            "Improved server-side rendering performance by optimizing data fetching patterns and reducing bundle size.",
-        type: "Feature",
-        tech: ["TypeScript", "React", "Node.js"],
-        pr: "#12345",
-        link: "https://github.com/vercel/next.js",
-    },
-    {
-        repo: "facebook/react",
-        description:
-            "Fixed hydration mismatch issue in concurrent mode affecting production builds.",
-        type: "Bug Fix",
-        tech: ["JavaScript", "React", "Testing"],
-        pr: "#67890",
-        link: "https://github.com/facebook/react",
-    },
-    {
-        repo: "framer/motion",
-        description:
-            "Refactored animation hooks to support better TypeScript inference and improved developer experience.",
-        type: "Refactor",
-        tech: ["TypeScript", "Framer Motion"],
-        link: "https://github.com/framer/motion",
-    },
-    {
-        repo: "tailwindlabs/tailwindcss",
-        description:
-            "Enhanced documentation for custom plugin development with real-world examples and best practices.",
-        type: "Docs",
-        tech: ["CSS", "Documentation", "MDX"],
-        pr: "#45678",
-        link: "https://github.com/tailwindlabs/tailwindcss",
-    },
-    {
-        repo: "pmndrs/three-fiber",
-        description:
-            "Added support for advanced lighting models and improved 3D scene performance optimization.",
-        type: "Feature",
-        tech: ["Three.js", "React", "WebGL"],
-        link: "https://github.com/pmndrs/react-three-fiber",
-    },
-    {
-        repo: "open-source-lib",
-        description:
-            "Refactored internal state management logic for improved scalability and maintainability.",
-        type: "Refactor",
-        tech: ["Node.js", "Architecture"],
-        link: "https://github.com/example/repo",
-    },
-];
+import { Contribution, ContributionType } from "@/types";
+import { useContributions } from "@/hooks/useContributions";
 
 /* ============================= */
 /*       Type Badge Styles       */
@@ -108,13 +46,13 @@ const typeBadgeConfig: Record<
 /* ============================= */
 
 function ContributionCard({
-    item,
+    contribution,
     index,
 }: {
-    item: Contribution;
+    contribution: Contribution;
     index: number;
 }) {
-    const badgeStyle = typeBadgeConfig[item.type];
+    const badgeStyle = typeBadgeConfig[contribution.type];
 
     return (
         <motion.div
@@ -149,11 +87,11 @@ function ContributionCard({
                     <div className="flex items-start justify-between gap-4 mb-4">
                         <div className="flex-1 min-w-0">
                             <h3 className="text-xl sm:text-2xl font-bold mb-1 bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:via-cyan-400 group-hover:to-pink-400 transition-all duration-500">
-                                {item.repo}
+                                {contribution.repo}
                             </h3>
-                            {item.pr && (
+                            {contribution.pr && (
                                 <p className="text-xs text-purple-400/80 font-mono">
-                                    PR: {item.pr}
+                                    PR: {contribution.pr}
                                 </p>
                             )}
                         </div>
@@ -163,18 +101,18 @@ function ContributionCard({
                             whileHover={{ scale: 1.05 }}
                             className={`flex-shrink-0 px-3 py-1.5 text-xs font-semibold rounded-full border ${badgeStyle.bg} ${badgeStyle.border} ${badgeStyle.text} shadow-lg ${badgeStyle.glow} transition-all duration-300`}
                         >
-                            {item.type}
+                            {contribution.type}
                         </motion.span>
                     </div>
 
                     {/* Description */}
                     <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-6 flex-grow">
-                        {item.description}
+                        {contribution.description}
                     </p>
 
                     {/* Tech Tags */}
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {item.tech.map((tech, i) => (
+                        {contribution.tech.map((tech, i) => (
                             <motion.span
                                 key={i}
                                 initial={{ opacity: 0, scale: 0.8 }}
@@ -191,7 +129,7 @@ function ContributionCard({
 
                     {/* GitHub Button */}
                     <motion.a
-                        href={item.link}
+                        href={contribution.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
@@ -217,6 +155,7 @@ function ContributionCard({
 /* ============================= */
 
 export default function Contributions() {
+    const { contributions, loading } = useContributions();
     const sectionRef = useRef<HTMLElement>(null);
 
     const { scrollYProgress } = useScroll({
@@ -280,8 +219,8 @@ export default function Contributions() {
 
                 {/* Contributions Grid */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-                    {contributions.map((item, index) => (
-                        <ContributionCard key={index} item={item} index={index} />
+                    {contributions.map((contribution, index) => (
+                        <ContributionCard key={index} contribution={contribution} index={index} />
                     ))}
                 </div>
             </div>

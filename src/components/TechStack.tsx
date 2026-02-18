@@ -4,69 +4,21 @@ import { useState, useRef } from "react";
 import {
     motion,
     AnimatePresence,
-    useScroll,
-    useTransform,
 } from "framer-motion";
-import {
-    SiNextdotjs,
-    SiReact,
-    SiTypescript,
-    SiTailwindcss,
-    SiNodedotjs,
-    SiPhp,
-    SiMysql,
-    SiMongodb,
-    SiDocker,
-    SiGit,
-    SiVercel,
-} from "react-icons/si";
-
-type Tech = {
-    name: string;
-    category: string;
-    level: string;
-    icon: React.ReactNode;
-};
-
-const techStack: Tech[] = [
-    { name: "Next.js", category: "Frontend", level: "Advanced", icon: <SiNextdotjs /> },
-    { name: "React", category: "Frontend", level: "Advanced", icon: <SiReact /> },
-    { name: "TypeScript", category: "Frontend", level: "Advanced", icon: <SiTypescript /> },
-    { name: "Tailwind", category: "Frontend", level: "Advanced", icon: <SiTailwindcss /> },
-
-    { name: "Node.js", category: "Backend", level: "Intermediate", icon: <SiNodedotjs /> },
-    { name: "PHP", category: "Backend", level: "Advanced", icon: <SiPhp /> },
-
-    { name: "MySQL", category: "Database", level: "Advanced", icon: <SiMysql /> },
-    { name: "MongoDB", category: "Database", level: "Intermediate", icon: <SiMongodb /> },
-
-    { name: "Docker", category: "Tools", level: "Intermediate", icon: <SiDocker /> },
-    { name: "Git", category: "Tools", level: "Advanced", icon: <SiGit /> },
-    { name: "Vercel", category: "Tools", level: "Advanced", icon: <SiVercel /> },
-];
-
-const categories = ["All", "Frontend", "Backend", "Database", "Tools"];
+import { Tech } from "@/types";
+import { useTechStack } from "@/hooks/useTechStack";
+import { useParallax } from "@/hooks/useParallax";
 
 export default function TechStack() {
-    const [active, setActive] = useState("All");
+    const {
+        filteredTech: filtered,
+        categories,
+        activeCategory: active,
+        setActiveCategory: setActive,
+        loading
+    } = useTechStack();
     const sectionRef = useRef<HTMLElement>(null);
-
-    /* ============================= */
-    /*       Parallax Background     */
-    /* ============================= */
-
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"],
-    });
-
-    const glow1Y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-    const glow2Y = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
-    const filtered =
-        active === "All"
-            ? techStack
-            : techStack.filter((tech) => tech.category === active);
+    const { glow1Y, glow2Y } = useParallax(sectionRef);
 
     return (
         <section
@@ -74,88 +26,96 @@ export default function TechStack() {
             id="tech-stack"
             className="relative py-28 px-6 md:px-16 text-white overflow-hidden"
         >
-            {/* Background Glow */}
-            <motion.div
-                style={{ y: glow1Y }}
-                className="absolute top-1/4 left-1/4 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[150px] rounded-full pointer-events-none"
-            />
-
-            <motion.div
-                style={{ y: glow2Y }}
-                className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[150px] rounded-full pointer-events-none"
-            />
-
-            <div className="max-w-7xl mx-auto relative z-10">
-                {/* Title */}
-                <motion.h2
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
-                >
-                    Tech Stack
-                </motion.h2>
-
-                {/* Filter Buttons - Enhanced & Responsive */}
-                <div className="mb-16 sm:mb-20">
-                    <div className="flex justify-center">
-                        <div className="inline-flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6 p-2 sm:p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                            {categories.map((cat) => (
-                                <div key={cat} className="relative">
-                                    <button
-                                        onClick={() => setActive(cat)}
-                                        className={`relative px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium rounded-xl transition-all duration-300 ${active === cat
-                                                ? "text-white bg-white/10"
-                                                : "text-gray-400 hover:text-white hover:bg-white/5"
-                                            }`}
-                                    >
-                                        <span className="relative z-10">{cat}</span>
-
-                                        {/* Active Background */}
-                                        {active === cat && (
-                                            <motion.div
-                                                layoutId="activeCategory"
-                                                className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-white/10"
-                                                transition={{
-                                                    type: "spring",
-                                                    stiffness: 380,
-                                                    damping: 30,
-                                                }}
-                                            />
-                                        )}
-                                    </button>
-
-                                    {/* Animated Underline */}
-                                    {active === cat && (
-                                        <motion.div
-                                            layoutId="underline"
-                                            className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
-                                            transition={{
-                                                type: "spring",
-                                                stiffness: 380,
-                                                damping: 30,
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+            {loading ? (
+                <div className="min-h-[400px] flex items-center justify-center">
+                    <div className="w-10 h-10 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
                 </div>
+            ) : (
+                <>
+                    {/* Background Glow */}
+                    <motion.div
+                        style={{ y: glow1Y }}
+                        className="absolute top-1/4 left-1/4 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[150px] rounded-full pointer-events-none"
+                    />
 
-                {/* Grid */}
-                <motion.div
-                    layout
-                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8"
-                >
-                    <AnimatePresence mode="sync">
-                        {filtered.map((tech, index) => (
-                            <TechCard key={tech.name} tech={tech} index={index} />
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
-            </div>
+                    <motion.div
+                        style={{ y: glow2Y }}
+                        className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[150px] rounded-full pointer-events-none"
+                    />
+
+                    <div className="max-w-7xl mx-auto relative z-10">
+                        {/* Title */}
+                        <motion.h2
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent"
+                        >
+                            Tech Stack
+                        </motion.h2>
+
+                        {/* Filter Buttons - Enhanced & Responsive */}
+                        <div className="mb-16 sm:mb-20">
+                            <div className="flex justify-center">
+                                <div className="inline-flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6 p-2 sm:p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
+                                    {categories.map((cat) => (
+                                        <div key={cat} className="relative">
+                                            <button
+                                                onClick={() => setActive(cat)}
+                                                className={`relative px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium rounded-xl transition-all duration-300 ${active === cat
+                                                    ? "text-white bg-white/10"
+                                                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                                                    }`}
+                                            >
+                                                <span className="relative z-10">{cat}</span>
+
+                                                {/* Active Background */}
+                                                {active === cat && (
+                                                    <motion.div
+                                                        layoutId="activeCategory"
+                                                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-white/10"
+                                                        transition={{
+                                                            type: "spring",
+                                                            stiffness: 380,
+                                                            damping: 30,
+                                                        }}
+                                                    />
+                                                )}
+                                            </button>
+
+                                            {/* Animated Underline */}
+                                            {active === cat && (
+                                                <motion.div
+                                                    layoutId="underline"
+                                                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
+                                                    transition={{
+                                                        type: "spring",
+                                                        stiffness: 380,
+                                                        damping: 30,
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Grid */}
+                        <motion.div
+                            layout
+                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8"
+                        >
+                            <AnimatePresence mode="sync">
+                                {filtered.map((tech, index) => (
+                                    <TechCard key={tech.name} tech={tech} index={index} />
+                                ))}
+                            </AnimatePresence>
+                        </motion.div>
+                    </div>
+                </>
+            )}
         </section>
     );
 }

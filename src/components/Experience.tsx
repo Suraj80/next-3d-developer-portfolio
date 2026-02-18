@@ -9,53 +9,8 @@ import {
 import { useRef, useState, useEffect, memo, useMemo, useCallback } from "react";
 import Image from "next/image";
 
-type ExperienceItem = {
-    role: string;
-    company: string;
-    logo: string;
-    startYear: number;
-    endYear?: number;
-    description: string[];
-};
-
-const experiences: ExperienceItem[] = [
-    {
-        role: "Software Developer Intern",
-        company: "Nantech Solutions",
-        logo: "/nantech_logo1.png",
-        startYear: 2023,
-        description: [
-            "Built enterprise-level CRM system with RBAC.",
-            "Integrated Keycloak SSO with secure session management.",
-            "Optimized 3D portfolio with dynamic imports.",
-            "Designed scalable MySQL architecture.",
-        ],
-    },
-    {
-        role: "Frontend Developer",
-        company: "Self Learning & Projects",
-        logo: "/next.svg",
-        startYear: 2022,
-        endYear: 2023,
-        description: [
-            "Built modern UI systems with React & Next.js.",
-            "Implemented advanced animations with Framer Motion.",
-            "Focused on performance-first architecture.",
-        ],
-    },
-    {
-        role: "Frontend Developer",
-        company: "Self Learning & Projects",
-        logo: "/next.svg",
-        startYear: 2022,
-        endYear: 2023,
-        description: [
-            "Built modern UI systems with React & Next.js.",
-            "Implemented advanced animations with Framer Motion.",
-            "Focused on performance-first architecture.",
-        ],
-    },
-];
+import { ExperienceItem } from "@/types";
+import { useExperience } from "@/hooks/useExperience";
 
 /* ============================= */
 /*   Optimized Year Counter      */
@@ -98,15 +53,15 @@ YearCounter.displayName = "YearCounter";
 /* ============================= */
 
 const ExperienceCard = memo(({
-    exp,
+    experience,
     index,
     isActive,
 }: {
-    exp: ExperienceItem;
+    experience: ExperienceItem;
     index: number;
     isActive: boolean;
 }) => {
-    const isCurrent = !exp.endYear;
+    const isCurrent = !experience.endYear;
     const isLeft = index % 2 === 0;
 
     // Memoize className to prevent recalculation
@@ -183,8 +138,8 @@ const ExperienceCard = memo(({
                                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-lg opacity-40 rounded-xl" />
                                 <div className="relative w-14 h-14 rounded-xl bg-white flex items-center justify-center p-2 border border-white/20 overflow-hidden">
                                     <Image
-                                        src={exp.logo}
-                                        alt={exp.company}
+                                        src={experience.logo}
+                                        alt={experience.company}
                                         fill
                                         className="object-contain"
                                         sizes="56px"
@@ -198,10 +153,10 @@ const ExperienceCard = memo(({
                                     className={`text-lg sm:text-xl font-semibold mb-1 transition-colors duration-300 ${isActive ? "text-purple-300" : "text-white"
                                         }`}
                                 >
-                                    {exp.company}
+                                    {experience.company}
                                 </h3>
                                 <p className="text-sm sm:text-base bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent font-medium">
-                                    {exp.role}
+                                    {experience.role}
                                 </p>
                             </div>
                         </div>
@@ -210,10 +165,10 @@ const ExperienceCard = memo(({
                         <div className="flex items-center gap-2 mb-4">
                             <div className="h-[1px] w-8 bg-gradient-to-r from-purple-400 to-cyan-400" />
                             <p className="text-xs sm:text-sm text-gray-400 font-mono">
-                                <YearCounter year={exp.startYear} />
+                                <YearCounter year={experience.startYear} />
                                 {" – "}
-                                {exp.endYear ? (
-                                    <YearCounter year={exp.endYear} />
+                                {experience.endYear ? (
+                                    <YearCounter year={experience.endYear} />
                                 ) : (
                                     <span className="text-green-400 font-semibold">
                                         Present
@@ -225,7 +180,7 @@ const ExperienceCard = memo(({
                         {/* Description - Always Visible */}
                         <div className="pt-4 border-t border-white/10">
                             <ul className="space-y-3">
-                                {exp.description.map((point, i) => (
+                                {experience.description.map((point, i) => (
                                     <motion.li
                                         key={point}
                                         initial={{ opacity: 0, x: -20 }}
@@ -258,6 +213,7 @@ ExperienceCard.displayName = "ExperienceCard";
 /* ============================= */
 
 export default function Experience() {
+    const { experiences, loading } = useExperience();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const sectionRef = useRef<HTMLElement>(null);
     const timelineRef = useRef<HTMLDivElement>(null);
@@ -356,15 +312,15 @@ export default function Experience() {
                     />
 
                     <div className="space-y-16 sm:space-y-20 lg:space-y-24">
-                        {experiences.map((exp, index) => (
+                        {experiences.map((experience, index) => (
                             <div
-                                key={`exp-${index}`}
+                                key={`experience-${index}`}
                                 ref={(el) => {
                                     cardRefs.current[index] = el;
                                 }}
                             >
                                 <ExperienceCard
-                                    exp={exp}
+                                    experience={experience}
                                     index={index}
                                     isActive={activeIndex === index}
                                 />

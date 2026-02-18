@@ -3,15 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SECTIONS = [
-    { id: "hero", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "tech-stack", label: "Tech Stack" },
-    { id: "projects", label: "Projects" },
-    { id: "experience", label: "Experience" },
-    { id: "contributions", label: "Contributions" },
-    { id: "contact", label: "Contact" },
-];
+import { NAV_SECTIONS as SECTIONS } from "@/data/navigation";
 
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);

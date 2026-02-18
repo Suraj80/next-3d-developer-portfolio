@@ -4,66 +4,21 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useRef } from "react";
 import { FiMail, FiMapPin, FiSend } from "react-icons/fi";
 import { BsCheckCircleFill } from "react-icons/bs";
+import { useContactForm } from "@/hooks/useContactForm";
+import { useParallax } from "@/hooks/useParallax";
 
 export default function Contact() {
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        message: "",
-    });
-
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const {
+        form,
+        loading,
+        success,
+        error,
+        handleChange,
+        handleSubmit,
+    } = useContactForm();
 
     const sectionRef = useRef<HTMLElement>(null);
-
-    /* ============================= */
-    /*       Parallax Background     */
-    /* ============================= */
-
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"],
-    });
-
-    const glow1Y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-    const glow2Y = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-        setSuccess(false);
-        setError(false);
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(false);
-
-        try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                body: JSON.stringify(form),
-                headers: { "Content-Type": "application/json" },
-            });
-
-            setLoading(false);
-
-            if (res.ok) {
-                setSuccess(true);
-                setForm({ name: "", email: "", message: "" });
-                setTimeout(() => setSuccess(false), 5000);
-            } else {
-                setError(true);
-            }
-        } catch (err) {
-            setLoading(false);
-            setError(true);
-        }
-    };
+    const { glow1Y, glow2Y } = useParallax(sectionRef);
 
     return (
         <section
