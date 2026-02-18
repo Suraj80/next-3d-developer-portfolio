@@ -2,14 +2,12 @@
 
 import {
     motion,
-    AnimatePresence,
     useScroll,
     useTransform,
     useInView,
 } from "framer-motion";
 import { useRef, useState, useEffect, memo, useMemo, useCallback } from "react";
 import Image from "next/image";
-import { FiChevronDown } from "react-icons/fi";
 
 type ExperienceItem = {
     role: string;
@@ -22,9 +20,9 @@ type ExperienceItem = {
 
 const experiences: ExperienceItem[] = [
     {
-        role: "Full Stack Developer",
-        company: "Freelance / Personal Projects",
-        logo: "/logos/freelance.png",
+        role: "Software Developer Intern",
+        company: "Nantech Solutions",
+        logo: "/nantech_logo1.png",
         startYear: 2023,
         description: [
             "Built enterprise-level CRM system with RBAC.",
@@ -36,7 +34,7 @@ const experiences: ExperienceItem[] = [
     {
         role: "Frontend Developer",
         company: "Self Learning & Projects",
-        logo: "/logos/self.png",
+        logo: "/next.svg",
         startYear: 2022,
         endYear: 2023,
         description: [
@@ -48,7 +46,7 @@ const experiences: ExperienceItem[] = [
     {
         role: "Frontend Developer",
         company: "Self Learning & Projects",
-        logo: "/logos/self.png",
+        logo: "/next.svg",
         startYear: 2022,
         endYear: 2023,
         description: [
@@ -102,11 +100,11 @@ YearCounter.displayName = "YearCounter";
 const ExperienceCard = memo(({
     exp,
     index,
-    isExpanded,
+    isActive,
 }: {
     exp: ExperienceItem;
     index: number;
-    isExpanded: boolean;
+    isActive: boolean;
 }) => {
     const isCurrent = !exp.endYear;
     const isLeft = index % 2 === 0;
@@ -165,16 +163,16 @@ const ExperienceCard = memo(({
                 <motion.div
                     initial={false}
                     animate={{
-                        opacity: isExpanded ? 0.4 : 0,
+                        opacity: isActive ? 0.4 : 0,
                     }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                     className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-xl pointer-events-none will-change-opacity"
                 />
 
                 {/* Gradient Border Container - Simplified */}
-                <div className={`relative p-[1px] rounded-2xl transition-all duration-400 ${isExpanded
-                        ? "bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-pink-500/50"
-                        : "bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30"
+                <div className={`relative p-[1px] rounded-2xl transition-all duration-400 ${isActive
+                    ? "bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-pink-500/50"
+                    : "bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30"
                     }`}>
                     {/* Card Content */}
                     <div className="relative p-6 sm:p-8 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10">
@@ -183,36 +181,29 @@ const ExperienceCard = memo(({
                             {/* Logo */}
                             <div className="relative flex-shrink-0">
                                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-lg opacity-40 rounded-xl" />
-                                <div className="relative w-14 h-14 rounded-xl bg-white/10 backdrop-blur-sm p-2 border border-white/20">
+                                <div className="relative w-14 h-14 rounded-xl bg-white flex items-center justify-center p-2 border border-white/20 overflow-hidden">
                                     <Image
                                         src={exp.logo}
                                         alt={exp.company}
                                         fill
-                                        className="object-contain p-1"
+                                        className="object-contain"
+                                        sizes="56px"
+                                        priority={index === 0}
                                     />
                                 </div>
                             </div>
 
                             <div className="flex-1">
                                 <h3
-                                    className={`text-lg sm:text-xl font-semibold mb-1 transition-colors duration-300 ${isExpanded ? "text-purple-300" : "text-white"
+                                    className={`text-lg sm:text-xl font-semibold mb-1 transition-colors duration-300 ${isActive ? "text-purple-300" : "text-white"
                                         }`}
                                 >
-                                    {exp.role}
+                                    {exp.company}
                                 </h3>
                                 <p className="text-sm sm:text-base bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent font-medium">
-                                    {exp.company}
+                                    {exp.role}
                                 </p>
                             </div>
-
-                            {/* Expand Icon - Optimized */}
-                            <motion.div
-                                animate={{ rotate: isExpanded ? 180 : 0 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="text-gray-400 group-hover:text-white transition-colors will-change-transform"
-                            >
-                                <FiChevronDown size={20} />
-                            </motion.div>
                         </div>
 
                         {/* Duration */}
@@ -231,50 +222,28 @@ const ExperienceCard = memo(({
                             </p>
                         </div>
 
-                        {/* Expandable Description - Optimized */}
-                        <AnimatePresence mode="wait">
-                            {isExpanded && (
-                                <motion.div
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    transition={{
-                                        duration: 0.3,
-                                        ease: [0.25, 0.1, 0.25, 1],
-                                        height: { duration: 0.4 }
-                                    }}
-                                    className="overflow-hidden will-change-auto"
-                                >
-                                    <div className="pt-4 border-t border-white/10">
-                                        <ul className="space-y-3">
-                                            {exp.description.map((point, i) => (
-                                                <motion.li
-                                                    key={i}
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{
-                                                        delay: i * 0.08,
-                                                        duration: 0.3,
-                                                        ease: "easeOut"
-                                                    }}
-                                                    className="flex items-start gap-3 text-sm sm:text-base text-gray-300"
-                                                >
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-cyan-400 mt-2 flex-shrink-0" />
-                                                    <span>{point}</span>
-                                                </motion.li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
-                        {/* Hint text - Optimized */}
-                        {!isExpanded && (
-                            <p className="text-xs text-gray-500 italic mt-2">
-                                Scroll to expand details
-                            </p>
-                        )}
+                        {/* Description - Always Visible */}
+                        <div className="pt-4 border-t border-white/10">
+                            <ul className="space-y-3">
+                                {exp.description.map((point, i) => (
+                                    <motion.li
+                                        key={point}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            delay: i * 0.08,
+                                            duration: 0.3,
+                                            ease: "easeOut"
+                                        }}
+                                        viewport={{ once: true }}
+                                        className="flex items-start gap-3 text-sm sm:text-base text-gray-300"
+                                    >
+                                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-cyan-400 mt-2 flex-shrink-0" />
+                                        <span>{point}</span>
+                                    </motion.li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -397,7 +366,7 @@ export default function Experience() {
                                 <ExperienceCard
                                     exp={exp}
                                     index={index}
-                                    isExpanded={activeIndex === index}
+                                    isActive={activeIndex === index}
                                 />
                             </div>
                         ))}

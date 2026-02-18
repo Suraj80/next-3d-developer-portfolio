@@ -46,7 +46,7 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="max-w-md">
                         <h3 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                            Suraj.dev
+                            ItsSuraj.dev
                         </h3>
                         <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
                             Building scalable systems, interactive experiences, and
@@ -57,24 +57,19 @@ export default function Footer() {
                     {/* Social Links */}
                     <div className="flex gap-4">
                         <SocialLink
-                            href="https://github.com/yourusername"
+                            href="https://github.com/Suraj80"
                             label="GitHub"
                             icon={<FiGithub />}
                         />
                         <SocialLink
-                            href="https://linkedin.com/in/yourusername"
+                            href="https://linkedin.com/in/suraj-j-/"
                             label="LinkedIn"
                             icon={<FiLinkedin />}
                         />
                         <SocialLink
-                            href="https://twitter.com/yourusername"
+                            href="https://twitter.com/SurajJ326311"
                             label="Twitter"
                             icon={<FiTwitter />}
-                        />
-                        <SocialLink
-                            href="mailto:your.email@example.com"
-                            label="Email"
-                            icon={<FiMail />}
                         />
                     </div>
                 </motion.div>

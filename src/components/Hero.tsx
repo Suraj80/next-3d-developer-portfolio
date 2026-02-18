@@ -73,7 +73,7 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 60 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.9 }}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-tight whitespace-nowrap"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-tight whitespace-nowrap text-zinc-900 dark:text-white"
                     >
                         Suraj Jangavali
                     </motion.h1>
@@ -92,9 +92,9 @@ export default function Hero() {
                     {/* SUBTITLE - Responsive text */}
                     <motion.p
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.7 }}
+                        animate={{ opacity: 1 }}
                         transition={{ delay: 1 }}
-                        className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed px-4 lg:px-0"
+                        className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed px-4 lg:px-0 text-zinc-600 dark:text-zinc-400"
                     >
                         Building modern web apps, AI tools, and interactive experiences.
                     </motion.p>
@@ -110,7 +110,7 @@ export default function Hero() {
                             View Projects
                         </button>
 
-                        <button className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border border-cyan-500/60 hover:bg-cyan-500/10 transition text-sm sm:text-base">
+                        <button className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border border-cyan-500/60 hover:bg-cyan-500/10 transition text-sm sm:text-base text-zinc-800 dark:text-white">
                             Download Resume
                         </button>
                     </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const SECTIONS = [
     { id: "hero", label: "Home" },
@@ -58,10 +58,10 @@ export default function Navbar() {
 
     // Smooth scroll to section
     const scrollToSection = (id: string) => {
+        setMobileOpen(false);
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: "smooth", block: "start" });
-            setMobileOpen(false);
         }
     };
 
@@ -84,7 +84,7 @@ export default function Navbar() {
                         onClick={() => scrollToSection("hero")}
                         className="font-bold tracking-tight text-lg relative z-10 bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-transform"
                     >
-                        Suraj.dev
+                        ItsSuraj.dev
                     </button>
 
                     {/* DESKTOP LINKS */}
@@ -142,27 +142,29 @@ export default function Navbar() {
                 </nav>
 
                 {/* MOBILE MENU */}
-                {mobileOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="lg:hidden mt-3 mx-auto max-w-6xl rounded-2xl border backdrop-blur-xl bg-black/40 border-white/10 shadow-xl p-4 flex flex-col gap-2"
-                    >
-                        {SECTIONS.map(({ id, label }) => (
-                            <button
-                                key={id}
-                                onClick={() => scrollToSection(id)}
-                                className={`text-left px-4 py-3 rounded-xl transition-all ${activeSection === id
-                                    ? "bg-white/10 text-white font-semibold border border-white/10"
-                                    : "text-gray-400 hover:bg-white/5 hover:text-white"
-                                    }`}
-                            >
-                                {label}
-                            </button>
-                        ))}
-                    </motion.div>
-                )}
+                <AnimatePresence>
+                    {mobileOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="lg:hidden mt-3 mx-auto max-w-6xl rounded-2xl border backdrop-blur-xl bg-black/40 border-white/10 shadow-xl p-4 flex flex-col gap-2 pointer-events-auto"
+                        >
+                            {SECTIONS.map(({ id, label }) => (
+                                <button
+                                    key={id}
+                                    onClick={() => scrollToSection(id)}
+                                    className={`text-left px-4 py-3 rounded-xl transition-all ${activeSection === id
+                                        ? "bg-white/10 text-white font-semibold border border-white/10"
+                                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                                        }`}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </header>
         </>
     );
