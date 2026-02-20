@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Navbar from "@/components/Navbar";
+import TerminalLoader from '@/components/TerminalLoader';
 
 // Lazy-load offscreen and heavy components to reduce the initial JavaScript bundle size
 const CyberpunkGrid = dynamic(() => import('@/components/CyberpunkGrid'), { ssr: false });
@@ -51,19 +52,21 @@ const About = dynamic(() => import('@/components/About'), {
 export default function Home() {
   return (
     <>
-      <CyberpunkGrid />
-      <Navbar />
+      <TerminalLoader >
+        <CyberpunkGrid />
+        <Navbar />
 
-      <main className="relative z-10">
-        <Hero />
-        <About />
-        <TechStack />
-        <Projects />
-        <Experience />
-        <Contributions />
-        <Contact />
-        <Footer />
-      </main>
+        <main className="relative z-10">
+          <Hero />
+          <About />
+          <TechStack />
+          <Projects />
+          <Experience />
+          <Contributions />
+          <Contact />
+          <Footer />
+        </main>
+      </TerminalLoader>
     </>
   );
 }
