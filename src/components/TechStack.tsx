@@ -10,13 +10,7 @@ import { useTechStack } from "@/hooks/useTechStack";
 import { useParallax } from "@/hooks/useParallax";
 
 export default function TechStack() {
-    const {
-        filteredTech: filtered,
-        categories,
-        activeCategory: active,
-        setActiveCategory: setActive,
-        loading
-    } = useTechStack();
+    const { techStack, loading } = useTechStack();
     const sectionRef = useRef<HTMLElement>(null);
     const { glow1Y, glow2Y } = useParallax(sectionRef);
 
@@ -55,52 +49,7 @@ export default function TechStack() {
                             Tech Stack
                         </motion.h2>
 
-                        {/* Filter Buttons - Enhanced & Responsive */}
-                        <div className="mb-16 sm:mb-20">
-                            <div className="flex justify-center">
-                                <div className="inline-flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6 p-2 sm:p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                                    {categories.map((cat) => (
-                                        <div key={cat} className="relative">
-                                            <button
-                                                onClick={() => setActive(cat)}
-                                                className={`relative px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium rounded-xl transition-all duration-300 ${active === cat
-                                                    ? "text-white bg-white/10"
-                                                    : "text-gray-400 hover:text-white hover:bg-white/5"
-                                                    }`}
-                                            >
-                                                <span className="relative z-10">{cat}</span>
 
-                                                {/* Active Background */}
-                                                {active === cat && (
-                                                    <motion.div
-                                                        layoutId="activeCategory"
-                                                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-white/10"
-                                                        transition={{
-                                                            type: "spring",
-                                                            stiffness: 380,
-                                                            damping: 30,
-                                                        }}
-                                                    />
-                                                )}
-                                            </button>
-
-                                            {/* Animated Underline */}
-                                            {active === cat && (
-                                                <motion.div
-                                                    layoutId="underline"
-                                                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"
-                                                    transition={{
-                                                        type: "spring",
-                                                        stiffness: 380,
-                                                        damping: 30,
-                                                    }}
-                                                />
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
 
                         {/* Grid */}
                         <motion.div
@@ -108,7 +57,7 @@ export default function TechStack() {
                             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8"
                         >
                             <AnimatePresence mode="sync">
-                                {filtered.map((tech, index) => (
+                                {techStack.map((tech, index) => (
                                     <TechCard key={tech.name} tech={tech} index={index} />
                                 ))}
                             </AnimatePresence>
@@ -181,7 +130,7 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
                 transition={{ duration: 6, repeat: Infinity }}
                 className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(139,92,246,0.3)] min-h-[160px]"
             >
-                <div className="text-5xl mb-4 text-gray-300 group-hover:text-purple-400 transition duration-300">
+                <div className="text-5xl mb-4 transition duration-300 drop-shadow-md group-hover:scale-110">
                     {tech.icon}
                 </div>
 

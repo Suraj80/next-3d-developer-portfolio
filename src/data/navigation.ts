@@ -3,7 +3,7 @@ export const NAV_SECTIONS = [
     { id: "about", label: "About" },
     { id: "tech-stack", label: "Tech Stack" },
     { id: "projects", label: "Projects" },
-    { id: "experience", label: "Experience" },
+    { id: "experience", label: "Career Timeline" },
     { id: "contributions", label: "Contributions" },
     { id: "contact", label: "Contact" },
 ];
