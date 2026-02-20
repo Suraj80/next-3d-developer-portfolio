@@ -2,13 +2,15 @@
 
 import dynamic from 'next/dynamic';
 import Navbar from "@/components/Navbar";
-import CyberpunkGrid from "@/components/CyberpunkGrid";
-import TechStack from "@/components/TechStack";
-import Projects from "@/components/Projects";
-import Experience from "@/components/Experience";
-import Contact from "@/components/Contact";
-import Contributions from "@/components/Contributions";
-import Footer from "@/components/Footer";
+
+// Lazy-load offscreen and heavy components to reduce the initial JavaScript bundle size
+const CyberpunkGrid = dynamic(() => import('@/components/CyberpunkGrid'), { ssr: false });
+const TechStack = dynamic(() => import('@/components/TechStack'));
+const Projects = dynamic(() => import('@/components/Projects'));
+const Experience = dynamic(() => import('@/components/Experience'));
+const Contact = dynamic(() => import('@/components/Contact'));
+const Contributions = dynamic(() => import('@/components/Contributions'));
+const Footer = dynamic(() => import('@/components/Footer'));
 
 // Dynamic imports for heavy components (contains 3D models and animations)
 const Hero = dynamic(() => import('@/components/Hero'), {

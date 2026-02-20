@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 // Use standard react-spline with next/dynamic for client-side only rendering
@@ -19,6 +19,11 @@ function SplineLoader() {
 
 export default function SplineRobot() {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     return (
         // Container logic: We make it larger and use a slight scale up to "zoom" the model visually
@@ -32,11 +37,15 @@ export default function SplineRobot() {
             )}
 
             {/* Container ensures the canvas fills the space */}
-            <div className={`w-full h-[500px] transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-                <Spline
-                    scene="https://prod.spline.design/QsAI2aiCEklzfV-j/scene.splinecode"
-                    onLoad={() => setIsLoaded(true)}
-                />
+            {/* Using absolute inset-0 forces it to exactly match the parent's non-zero dimensions */}
+            <div className={`absolute inset-0 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                {/* Only render Spline if we are safely mounted on the client to avoid 0x0 container read before hydration paints */}
+                {isMounted && (
+                    <Spline
+                        scene="https://prod.spline.design/QsAI2aiCEklzfV-j/scene.splinecode"
+                        onLoad={() => setIsLoaded(true)}
+                    />
+                )}
             </div>
         </div>
     );
