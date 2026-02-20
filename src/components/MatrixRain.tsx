@@ -1,9 +1,13 @@
 "use client";
 
+
 import { useEffect, useRef } from "react";
+// @ts-ignore
+import MatrixRainWorker from "../workers/matrixRainWorker.js?worker";
 
 export default function MatrixRain() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
 
     useEffect(() => {
         const canvas = canvasRef.current!;
@@ -11,71 +15,68 @@ export default function MatrixRain() {
 
         let width = window.innerWidth;
         let height = window.innerHeight;
-
-        // ⚡ Mobile detection for performance optimization
         const isMobile = width < 768;
-        
-        // Cap DPR lower on mobile to reduce pixel count
         const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5);
+        const fontSize = isMobile ? 14 : 16;
 
         canvas.width = width * dpr;
         canvas.height = height * dpr;
         canvas.style.width = width + "px";
         canvas.style.height = height + "px";
-
         ctx.scale(dpr, dpr);
 
-        const letters =
-            "アァカサタナハマヤャラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const fontSize = isMobile ? 14 : 16; // Smaller = fewer columns = better performance
-        const columns = Math.floor(width / fontSize);
+        // Set up the worker
+        const worker = new MatrixRainWorker();
+        worker.postMessage({ type: "init", width, height, fontSize });
 
-        const drops = Array(columns).fill(1);
+        ctx.font = fontSize + "px monospace";
 
-        function draw() {
-            // fade effect
+        function drawFrame(frame: { x: number; y: number; text: string }[]) {
             ctx.fillStyle = "rgba(0,0,0,0.08)";
             ctx.fillRect(0, 0, width, height);
-
             ctx.fillStyle = "#00ff9c";
-            ctx.font = fontSize + "px monospace";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-
-                drops[i]++;
+            for (const { x, y, text } of frame) {
+                ctx.fillText(text, x, y);
             }
         }
 
-        // ⚡ Slower interval on mobile (50ms vs 40ms = 20fps vs 25fps)
-        const interval = setInterval(draw, isMobile ? 50 : 40);
+        let animationId: number;
+        let running = true;
+
+        function step() {
+            if (!running) return;
+            worker.postMessage({ type: "step" });
+        }
+
+        worker.onmessage = (e: MessageEvent) => {
+            if (e.data.type === "frame") {
+                drawFrame(e.data.frame);
+                animationId = window.setTimeout(step, isMobile ? 50 : 40);
+            }
+        };
+
+        step();
 
         const handleResize = () => {
             width = window.innerWidth;
             height = window.innerHeight;
-            
             const newIsMobile = width < 768;
             const newDpr = Math.min(window.devicePixelRatio || 1, newIsMobile ? 1 : 1.5);
-
             canvas.width = width * newDpr;
             canvas.height = height * newDpr;
             canvas.style.width = width + "px";
             canvas.style.height = height + "px";
-
             ctx.scale(newDpr, newDpr);
+            worker.postMessage({ type: "init", width, height, fontSize: newIsMobile ? 14 : 16 });
         };
 
         window.addEventListener("resize", handleResize);
 
         return () => {
-            clearInterval(interval);
+            running = false;
             window.removeEventListener("resize", handleResize);
+            if (animationId) clearTimeout(animationId);
+            worker.terminate();
         };
     }, []);
 
