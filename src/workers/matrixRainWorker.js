@@ -13,7 +13,7 @@ function init(w, h, fSize) {
   height = h;
   fontSize = fSize || 16;
   columns = Math.floor(width / fontSize);
-  drops = Array(columns).fill(1);
+  drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -20));
 }
 
 function step() {
@@ -33,7 +33,7 @@ function step() {
   postMessage({ type: 'frame', frame });
 }
 
-onmessage = function(e) {
+onmessage = function (e) {
   const { type, width, height, fontSize } = e.data;
   if (type === 'init') {
     init(width, height, fontSize);

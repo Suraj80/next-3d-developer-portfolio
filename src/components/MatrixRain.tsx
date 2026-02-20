@@ -2,8 +2,6 @@
 
 
 import { useEffect, useRef } from "react";
-// @ts-ignore
-import MatrixRainWorker from "../workers/matrixRainWorker.js?worker";
 
 export default function MatrixRain() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,8 +23,10 @@ export default function MatrixRain() {
         canvas.style.height = height + "px";
         ctx.scale(dpr, dpr);
 
-        // Set up the worker
-        const worker = new MatrixRainWorker();
+        // Set up the worker using URL pattern for Next.js compatibility
+        const worker = new Worker(
+            new URL("../workers/matrixRainWorker.js", import.meta.url)
+        );
         worker.postMessage({ type: "init", width, height, fontSize });
 
         ctx.font = fontSize + "px monospace";
@@ -51,7 +51,7 @@ export default function MatrixRain() {
         worker.onmessage = (e: MessageEvent) => {
             if (e.data.type === "frame") {
                 drawFrame(e.data.frame);
-                animationId = window.setTimeout(step, isMobile ? 50 : 40);
+                animationId = window.setTimeout(step, isMobile ? 35 : 30);
             }
         };
 

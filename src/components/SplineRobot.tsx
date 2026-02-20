@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-// @ts-ignore
-import RobotWorker from '../workers/3dRobotWorker.js?worker';
 import dynamic from 'next/dynamic';
 
 // Use standard react-spline with next/dynamic for client-side only rendering
@@ -23,22 +21,8 @@ function SplineLoader() {
 export default function SplineRobot() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
-    const [workerResult, setWorkerResult] = useState<number | null>(null);
-
     useEffect(() => {
         setIsMounted(true);
-
-        // Example: use worker for heavy computation
-        const worker = new RobotWorker();
-        worker.postMessage({ type: 'compute' });
-        worker.onmessage = (e: MessageEvent) => {
-            if (e.data.type === 'result') {
-                setWorkerResult(e.data.result);
-            }
-        };
-        return () => {
-            worker.terminate();
-        };
     }, []);
 
     return (
@@ -58,12 +42,6 @@ export default function SplineRobot() {
                     />
                 )}
             </div>
-            {/* Example: show worker result (for demonstration) */}
-            {workerResult !== null && (
-                <div className="absolute bottom-2 right-2 bg-black/60 text-xs text-green-400 px-2 py-1 rounded">
-                    Worker result: {workerResult.toFixed(2)}
-                </div>
-            )}
         </div>
     );
 }

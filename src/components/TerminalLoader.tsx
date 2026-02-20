@@ -56,8 +56,8 @@ export default function TerminalLoader({
             setTimeout(() => {
                 setFinished(true);
                 sessionStorage.setItem("bootSequenceComplete", "true");
-                setTimeout(() => setHeroVisible(true), 1200); // Wait for Matrix rain to be visible
-            }, 900);
+                setTimeout(() => setHeroVisible(true), 2500); // Wait for Matrix rain to fully cover screen
+            }, 1000);
             return;
         }
 
