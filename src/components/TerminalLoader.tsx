@@ -17,7 +17,7 @@ export default function TerminalLoader({
     const audioUnlocked = useAudioUnlock();
 
     const [visibleLines, setVisibleLines] = useState<string[]>([]);
-    const [currentText, setCurrentText] = useState("");
+    const currentTextRef = useRef<HTMLSpanElement>(null);
     const [lineIndex, setLineIndex] = useState(0);
     const [finished, setFinished] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
@@ -66,7 +66,9 @@ export default function TerminalLoader({
 
         const typing = setInterval(() => {
             if (charIndex < line.length) {
-                setCurrentText(line.slice(0, charIndex + 1));
+                if (currentTextRef.current) {
+                    currentTextRef.current.textContent = line.slice(0, charIndex + 1);
+                }
 
                 if (typeSound.current) {
                     typeSound.current.currentTime = 0;
@@ -79,7 +81,9 @@ export default function TerminalLoader({
 
                 setTimeout(() => {
                     setVisibleLines(prev => [...prev, line]);
-                    setCurrentText("");
+                    if (currentTextRef.current) {
+                        currentTextRef.current.textContent = "";
+                    }
                     setLineIndex(prev => prev + 1);
                 }, 250);
             }
@@ -148,7 +152,7 @@ export default function TerminalLoader({
                                 ))}
 
                                 <div>
-                                    {currentText}
+                                    <span ref={currentTextRef}></span>
                                     <motion.span
                                         animate={{ opacity: [0, 1, 0] }}
                                         transition={{ repeat: Infinity, duration: 1 }}
