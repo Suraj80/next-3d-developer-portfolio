@@ -64,6 +64,11 @@ export default function TerminalLoader({
         const line = LINES[lineIndex];
         let charIndex = 0;
 
+        // ⚡ Slower typing on mobile for better performance
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        const baseDelay = isMobile ? 35 : 25;
+        const randomDelay = isMobile ? 20 : 30;
+
         const typing = setInterval(() => {
             if (charIndex < line.length) {
                 setCurrentText(line.slice(0, charIndex + 1));
@@ -83,36 +88,40 @@ export default function TerminalLoader({
                     setLineIndex(prev => prev + 1);
                 }, 250);
             }
-        }, 25 + Math.random() * 30);
+        }, baseDelay + Math.random() * randomDelay);
 
         return () => clearInterval(typing);
     }, [lineIndex, audioUnlocked, skipBoot]);
 
     return (
         <>
-            {/* Run MatrixRain immediately so it's 100% loaded and running, but keep it hidden until finished */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={finished || skipBoot ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                className="fixed inset-0 z-0 pointer-events-none"
-            >
-                <MatrixRain />
-            </motion.div>
+            {/* ⚡ PERFORMANCE: Only render MatrixRain when terminal is finished (not just hidden) */}
+            {(finished || skipBoot) && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    className="fixed inset-0 z-0 pointer-events-none"
+                >
+                    <MatrixRain />
+                </motion.div>
+            )}
 
-            {/* Render children ALWAYS so they preload in the background. */}
-            <motion.div
-                initial={skipBoot ? {} : { opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-                animate={
-                    heroVisible
-                        ? { opacity: 1, scale: 1, filter: "blur(0px)" }
-                        : { opacity: 0, scale: 1.05, filter: "blur(10px)" }
-                }
-                transition={{ duration: 1, ease: "easeOut" }}
-                className={heroVisible ? "relative z-10" : "fixed inset-0 overflow-hidden pointer-events-none"}
-            >
-                {children}
-            </motion.div>
+            {/* ⚡ PERFORMANCE: Only render children when terminal is finished or near finished */}
+            {(finished || skipBoot || lineIndex >= LINES.length - 1) && (
+                <motion.div
+                    initial={skipBoot ? {} : { opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+                    animate={
+                        heroVisible
+                            ? { opacity: 1, scale: 1, filter: "blur(0px)" }
+                            : { opacity: 0, scale: 1.05, filter: "blur(10px)" }
+                    }
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className={heroVisible ? "relative z-10" : "fixed inset-0 overflow-hidden pointer-events-none"}
+                >
+                    {children}
+                </motion.div>
+            )}
 
             {/* 🔒 WAIT FOR USER INTERACTION Overlay */}
             {!audioUnlocked && !skipBoot && isMounted && (

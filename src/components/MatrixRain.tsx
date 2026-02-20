@@ -12,7 +12,11 @@ export default function MatrixRain() {
         let width = window.innerWidth;
         let height = window.innerHeight;
 
-        const dpr = window.devicePixelRatio || 1;
+        // ⚡ Mobile detection for performance optimization
+        const isMobile = width < 768;
+        
+        // Cap DPR lower on mobile to reduce pixel count
+        const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5);
 
         canvas.width = width * dpr;
         canvas.height = height * dpr;
@@ -23,7 +27,7 @@ export default function MatrixRain() {
 
         const letters =
             "アァカサタナハマヤャラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const fontSize = 16;
+        const fontSize = isMobile ? 14 : 16; // Smaller = fewer columns = better performance
         const columns = Math.floor(width / fontSize);
 
         const drops = Array(columns).fill(1);
@@ -49,18 +53,22 @@ export default function MatrixRain() {
             }
         }
 
-        const interval = setInterval(draw, 40);
+        // ⚡ Slower interval on mobile (50ms vs 40ms = 20fps vs 25fps)
+        const interval = setInterval(draw, isMobile ? 50 : 40);
 
         const handleResize = () => {
             width = window.innerWidth;
             height = window.innerHeight;
+            
+            const newIsMobile = width < 768;
+            const newDpr = Math.min(window.devicePixelRatio || 1, newIsMobile ? 1 : 1.5);
 
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
+            canvas.width = width * newDpr;
+            canvas.height = height * newDpr;
             canvas.style.width = width + "px";
             canvas.style.height = height + "px";
 
-            ctx.scale(dpr, dpr);
+            ctx.scale(newDpr, newDpr);
         };
 
         window.addEventListener("resize", handleResize);
