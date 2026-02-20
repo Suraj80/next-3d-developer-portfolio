@@ -27,14 +27,8 @@ export default function TerminalLoader({
     const typeSound = useRef<HTMLAudioElement | null>(null);
     const bootSound = useRef<HTMLAudioElement | null>(null);
 
-    // preload sounds once, and check session storage
+    // Check session storage on mount
     useEffect(() => {
-        typeSound.current = new Audio("/sounds/type.wav");
-        bootSound.current = new Audio("/sounds/boot.mp3");
-
-        if (typeSound.current) typeSound.current.volume = 0.25;
-        if (bootSound.current) bootSound.current.volume = 0.4;
-
         // Check if boot sequence was already completed in this session
         if (sessionStorage.getItem("bootSequenceComplete")) {
             setSkipBoot(true);
@@ -45,13 +39,46 @@ export default function TerminalLoader({
         setIsMounted(true);
     }, []);
 
+    // Lazy load audio AFTER user interaction (mobile-friendly)
+    useEffect(() => {
+        if (!audioUnlocked || skipBoot) return;
+        
+        try {
+            typeSound.current = new Audio("/sounds/type.wav");
+            bootSound.current = new Audio("/sounds/boot.mp3");
+
+            if (typeSound.current) typeSound.current.volume = 0.25;
+            if (bootSound.current) bootSound.current.volume = 0.4;
+        } catch (error) {
+            console.warn("Audio initialization failed:", error);
+            // Continue without audio - don't block the experience
+        }
+    }, [audioUnlocked, skipBoot]);
+
+    // Timeout fallback - auto-proceed if stuck (mobile safety)
+    useEffect(() => {
+        const fallbackTimeout = setTimeout(() => {
+            if (!audioUnlocked && !skipBoot && isMounted) {
+                console.warn("Audio unlock timeout - proceeding anyway");
+                setSkipBoot(true);
+                setFinished(true);
+                setHeroVisible(true);
+            }
+        }, 5000); // 5 second timeout
+
+        return () => clearTimeout(fallbackTimeout);
+    }, [audioUnlocked, skipBoot, isMounted]);
+
     // typing logic
     useEffect(() => {
         if (!audioUnlocked || skipBoot) return;
 
         if (lineIndex >= LINES.length) {
+            // Play boot sound but don't wait for it
             if (bootSound.current) {
-                bootSound.current.play().catch(() => { });
+                bootSound.current.play().catch((err) => {
+                    console.debug("Boot sound play failed:", err);
+                });
             }
             setTimeout(() => {
                 setFinished(true);
@@ -70,9 +97,13 @@ export default function TerminalLoader({
                     currentTextRef.current.textContent = line.slice(0, charIndex + 1);
                 }
 
+                // Play sound but don't block if it fails (mobile-friendly)
                 if (typeSound.current) {
                     typeSound.current.currentTime = 0;
-                    typeSound.current.play().catch(() => { });
+                    typeSound.current.play().catch((err) => {
+                        // Silent fail - audio is enhancement, not requirement
+                        console.debug("Type sound play failed:", err);
+                    });
                 }
 
                 charIndex++;
@@ -120,9 +151,14 @@ export default function TerminalLoader({
 
             {/* 🔒 WAIT FOR USER INTERACTION Overlay */}
             {!audioUnlocked && !skipBoot && isMounted && (
-                <div className="fixed inset-0 z-[60] bg-black text-green-400 flex items-center justify-center font-mono cursor-pointer">
+                <div 
+                    className="fixed inset-0 z-[60] bg-black text-green-400 flex items-center justify-center font-mono cursor-pointer"
+                    role="button"
+                    aria-label="Start boot sequence"
+                    tabIndex={0}
+                >
                     <p className="animate-pulse text-lg text-center px-4">
-                        Click anywhere to start boot sequence...
+                        Tap anywhere to start boot sequence...
                     </p>
                 </div>
             )}
