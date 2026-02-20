@@ -27,7 +27,7 @@ export default function SplineRobot() {
 
     return (
         // Container logic: We make it larger and use a slight scale up to "zoom" the model visually
-        <div className="relative w-full h-[300px] sm:h-[500px] md:h-[700px] lg:h-[800px] xl:h-[900px] flex justify-center items-center scale-110 sm:scale-100 origin-center mt-5">
+        <div className="relative w-full h-[500px] sm:h-[500px] md:h-[700px] lg:h-[800px] xl:h-[900px] flex justify-center items-center scale-85 sm:scale-100 origin-center mt-5">
 
             {/* Show loader while Spline initializes */}
             {!isLoaded && (

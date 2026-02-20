@@ -22,6 +22,7 @@ export default function TerminalLoader({
     const [finished, setFinished] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
     const [skipBoot, setSkipBoot] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     const typeSound = useRef<HTMLAudioElement | null>(null);
     const bootSound = useRef<HTMLAudioElement | null>(null);
@@ -40,11 +41,13 @@ export default function TerminalLoader({
             setFinished(true); // INSTANTLY allow Hero section to mount
             setHeroVisible(true);
         }
+
+        setIsMounted(true);
     }, []);
 
     // typing logic
     useEffect(() => {
-        if (!audioUnlocked) return;
+        if (!audioUnlocked || skipBoot) return;
 
         if (lineIndex >= LINES.length) {
             if (bootSound.current) {
@@ -83,7 +86,7 @@ export default function TerminalLoader({
         }, 25 + Math.random() * 30);
 
         return () => clearInterval(typing);
-    }, [lineIndex, audioUnlocked]);
+    }, [lineIndex, audioUnlocked, skipBoot]);
 
     return (
         <>
@@ -112,7 +115,7 @@ export default function TerminalLoader({
             </motion.div>
 
             {/* 🔒 WAIT FOR USER INTERACTION Overlay */}
-            {!audioUnlocked && !skipBoot && (
+            {!audioUnlocked && !skipBoot && isMounted && (
                 <div className="fixed inset-0 z-[60] bg-black text-green-400 flex items-center justify-center font-mono cursor-pointer">
                     <p className="animate-pulse text-lg text-center px-4">
                         Click anywhere to start boot sequence...

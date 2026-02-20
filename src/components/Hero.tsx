@@ -70,7 +70,7 @@ export default function Hero() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1 }}
-                        className="block lg:hidden w-full flex justify-center mb-4"
+                        className="block lg:hidden w-full flex justify-center -mb-32 sm:-mb-18"
                     >
                         <div className="w-full max-w-[320px]">
                             <SplineRobot />
