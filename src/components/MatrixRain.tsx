@@ -1,21 +1,32 @@
 "use client";
 
-
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MatrixRain() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
+    const [isLargeScreen, setIsLargeScreen] = useState(true);
 
     useEffect(() => {
-        const canvas = canvasRef.current!;
+        // Run once on mount to establish true width
+        const checkScreen = () => {
+            setIsLargeScreen(window.innerWidth >= 1024);
+        };
+
+        checkScreen();
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
+
+    useEffect(() => {
+        if (!isLargeScreen || !canvasRef.current) return;
+
+        const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d")!;
 
         let width = window.innerWidth;
         let height = window.innerHeight;
-        const isMobile = width < 768;
-        const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5);
-        const fontSize = isMobile ? 14 : 16;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        const fontSize = 16;
 
         canvas.width = width * dpr;
         canvas.height = height * dpr;
@@ -51,7 +62,7 @@ export default function MatrixRain() {
         worker.onmessage = (e: MessageEvent) => {
             if (e.data.type === "frame") {
                 drawFrame(e.data.frame);
-                animationId = window.setTimeout(step, isMobile ? 35 : 30);
+                animationId = window.setTimeout(step, 30);
             }
         };
 
@@ -60,14 +71,13 @@ export default function MatrixRain() {
         const handleResize = () => {
             width = window.innerWidth;
             height = window.innerHeight;
-            const newIsMobile = width < 768;
-            const newDpr = Math.min(window.devicePixelRatio || 1, newIsMobile ? 1 : 1.5);
+            const newDpr = Math.min(window.devicePixelRatio || 1, 1.5);
             canvas.width = width * newDpr;
             canvas.height = height * newDpr;
             canvas.style.width = width + "px";
             canvas.style.height = height + "px";
             ctx.scale(newDpr, newDpr);
-            worker.postMessage({ type: "init", width, height, fontSize: newIsMobile ? 14 : 16 });
+            worker.postMessage({ type: "init", width, height, fontSize });
         };
 
         window.addEventListener("resize", handleResize);
@@ -78,12 +88,14 @@ export default function MatrixRain() {
             if (animationId) clearTimeout(animationId);
             worker.terminate();
         };
-    }, []);
+    }, [isLargeScreen]);
 
-    return (
+    return isLargeScreen ? (
         <canvas
             ref={canvasRef}
             className="fixed inset-0 -z-10 bg-black"
         />
+    ) : (
+        <div className="fixed inset-0 -z-10 bg-black" />
     );
 }

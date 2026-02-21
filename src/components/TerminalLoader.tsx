@@ -56,8 +56,8 @@ export default function TerminalLoader({
             setTimeout(() => {
                 setFinished(true);
                 sessionStorage.setItem("bootSequenceComplete", "true");
-                setTimeout(() => setHeroVisible(true), 2500); // Wait for Matrix rain to fully cover screen
-            }, 1000);
+                setHeroVisible(true); // Instantly load Hero without waiting for Matrix rain
+            }, 300);
             return;
         }
 
@@ -66,8 +66,8 @@ export default function TerminalLoader({
 
         // ⚡ Slower typing on mobile for better performance
         const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-        const baseDelay = isMobile ? 35 : 25;
-        const randomDelay = isMobile ? 20 : 30;
+        const baseDelay = isMobile ? 15 : 10;
+        const randomDelay = isMobile ? 10 : 15;
 
         const typing = setInterval(() => {
             if (charIndex < line.length) {
@@ -86,7 +86,7 @@ export default function TerminalLoader({
                     setVisibleLines(prev => [...prev, line]);
                     setCurrentText("");
                     setLineIndex(prev => prev + 1);
-                }, 250);
+                }, 100);
             }
         }, baseDelay + Math.random() * randomDelay);
 
@@ -95,6 +95,9 @@ export default function TerminalLoader({
 
     return (
         <>
+            {/* Persistent black background prevents white flash from theme layout while transition happens */}
+            <div className="fixed inset-0 -z-50 bg-black pointer-events-none" />
+
             {/* ⚡ PERFORMANCE: Only render MatrixRain when terminal is finished (not just hidden) */}
             {(finished || skipBoot) && (
                 <motion.div
@@ -117,6 +120,17 @@ export default function TerminalLoader({
                             : { opacity: 0, scale: 1.05, filter: "blur(10px)" }
                     }
                     transition={{ duration: 1, ease: "easeOut" }}
+                    onAnimationComplete={() => {
+                        if (heroVisible) {
+                            // Clear transform and filter to prevent fixed-position stacking context issues for Navbar
+                            const el = document.getElementById("terminal-content-wrapper");
+                            if (el) {
+                                el.style.transform = "none";
+                                el.style.filter = "none";
+                            }
+                        }
+                    }}
+                    id="terminal-content-wrapper"
                     className={heroVisible ? "relative z-10" : "fixed inset-0 overflow-hidden pointer-events-none"}
                 >
                     {children}
