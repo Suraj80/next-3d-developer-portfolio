@@ -115,13 +115,20 @@ export default function Hero() {
                         transition={{ delay: 1.2 }}
                         className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-10 w-full sm:w-auto px-4 lg:px-0"
                     >
-                        <button className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold transition shadow-lg shadow-cyan-500/30 text-sm sm:text-base">
+                        <a
+                            href="#projects"
+                            className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold transition shadow-lg shadow-cyan-500/30 text-sm sm:text-base text-center"
+                        >
                             View Projects
-                        </button>
+                        </a>
 
-                        <button className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border border-cyan-500/60 hover:bg-cyan-500/10 transition text-sm sm:text-base text-zinc-800 dark:text-white">
+                        <a
+                            href="/Suraj_Fullstack_Resume.pdf"
+                            download="Suraj_Fullstack_Resume.pdf"
+                            className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border border-cyan-500/60 hover:bg-cyan-500/10 transition text-sm sm:text-base text-zinc-800 dark:text-white text-center"
+                        >
                             Download Resume
-                        </button>
+                        </a>
                     </motion.div>
                 </div>
 

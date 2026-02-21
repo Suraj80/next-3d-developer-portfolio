@@ -101,7 +101,7 @@ export default function Contact() {
                                     <div>
                                         <p className="text-xs text-gray-500 mb-1">Email</p>
                                         <p className="text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 font-medium">
-                                            your_email@gmail.com
+                                            Surajjangavali80@gmail.com
                                         </p>
                                     </div>
                                 </div>
