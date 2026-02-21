@@ -2,54 +2,19 @@ import { Contribution } from "@/types";
 
 export const contributions: Contribution[] = [
     {
-        repo: "vercel/next.js",
+        repo: "Suraj80/next-3d-developer-portfolio",
         description:
-            "Improved server-side rendering performance by optimizing data fetching patterns and reducing bundle size.",
+            "A modern, highly interactive, and performance-optimized 3D developer portfolio built with Next.js, Framer Motion, and Tailwind CSS.",
         type: "Feature",
-        tech: ["TypeScript", "React", "Node.js"],
-        pr: "#12345",
-        link: "https://github.com/vercel/next.js",
+        tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+        link: "https://github.com/Suraj80/next-3d-developer-portfolio",
     },
     {
-        repo: "facebook/react",
+        repo: "Suraj80/keycloak-php-sso",
         description:
-            "Fixed hydration mismatch issue in concurrent mode affecting production builds.",
-        type: "Bug Fix",
-        tech: ["JavaScript", "React", "Testing"],
-        pr: "#67890",
-        link: "https://github.com/facebook/react",
-    },
-    {
-        repo: "framer/motion",
-        description:
-            "Refactored animation hooks to support better TypeScript inference and improved developer experience.",
-        type: "Refactor",
-        tech: ["TypeScript", "Framer Motion"],
-        link: "https://github.com/framer/motion",
-    },
-    {
-        repo: "tailwindlabs/tailwindcss",
-        description:
-            "Enhanced documentation for custom plugin development with real-world examples and best practices.",
-        type: "Docs",
-        tech: ["CSS", "Documentation", "MDX"],
-        pr: "#45678",
-        link: "https://github.com/tailwindlabs/tailwindcss",
-    },
-    {
-        repo: "pmndrs/three-fiber",
-        description:
-            "Added support for advanced lighting models and improved 3D scene performance optimization.",
+            "A production-ready open source repository of centralized authentication using Keycloak for multiple SaaS applications with Single Sign-On (SSO) and Single Logout (SLO).",
         type: "Feature",
-        tech: ["Three.js", "React", "WebGL"],
-        link: "https://github.com/pmndrs/react-three-fiber",
-    },
-    {
-        repo: "open-source-lib",
-        description:
-            "Refactored internal state management logic for improved scalability and maintainability.",
-        type: "Refactor",
-        tech: ["Node.js", "Architecture"],
-        link: "https://github.com/example/repo",
+        tech: ["PHP", "Keycloak", "Authentication"],
+        link: "https://github.com/Suraj80/keycloak-php-sso",
     },
 ];

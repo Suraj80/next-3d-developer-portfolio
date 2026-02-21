@@ -5,9 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import useAudioUnlock from "@/hooks/useAudioUnlock";
 
 import { TERMINAL_LINES as LINES } from "@/data/terminal";
-import dynamic from 'next/dynamic';
-
-const MatrixRain = dynamic(() => import('@/components/MatrixRain'), { ssr: false });
 
 export default function TerminalLoader({
     children,
@@ -97,18 +94,6 @@ export default function TerminalLoader({
         <>
             {/* Persistent black background prevents white flash from theme layout while transition happens */}
             <div className="fixed inset-0 -z-50 bg-black pointer-events-none" />
-
-            {/* ⚡ PERFORMANCE: Only render MatrixRain when terminal is finished (not just hidden) */}
-            {(finished || skipBoot) && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="fixed inset-0 z-0 pointer-events-none"
-                >
-                    <MatrixRain />
-                </motion.div>
-            )}
 
             {/* ⚡ PERFORMANCE: Only render children when terminal is finished or near finished */}
             {(finished || skipBoot || lineIndex >= LINES.length - 1) && (

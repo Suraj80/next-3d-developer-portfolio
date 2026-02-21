@@ -202,25 +202,21 @@ export default function About() {
                         className="space-y-6 lg:pl-8 xl:pl-12"
                     >
                         <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed">
-                            I'm a <span className="text-cyan-400 font-semibold">full-stack developer</span> passionate about building scalable,
-                            high-performance applications with modern UI and clean architecture.
+                            I'm a <span className="text-cyan-400 font-semibold">Full-Stack Software Engineer</span> building scalable,
+                            production-ready web applications using React (TypeScript), Laravel, FastAPI, and MySQL.
+                            I focus on clean architecture, performance optimization, and secure system design.
                         </p>
 
                         <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed">
-                            My journey in software development has been driven by curiosity and a love for problem-solving.
-                            I specialize in creating <span className="text-purple-400 font-medium">interactive web experiences</span> that
-                            combine beautiful design with robust functionality.
-                        </p>
-
-                        <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed">
-                            From <span className="text-pink-400 font-medium">React and Next.js</span> to <span className="text-cyan-400 font-medium">Python and AI tools</span>,
-                            I work across the full stack to bring ideas to life. I believe in writing clean, maintainable code
-                            and staying up-to-date with the latest technologies.
+                            I’ve engineered secure authentication systems using <span className="text-pink-400 font-medium">Keycloak (SSO, SLO, 2FA, RBAC)</span>,
+                            built AI-powered applications with <span className="text-cyan-400 font-medium">LangChain, OpenAI, and FAISS</span>,
+                            and architected scalable e-commerce platforms with Redis caching, payment integrations,
+                            and CI/CD deployments on AWS.
                         </p>
 
                         <div className="pt-4 border-t border-white/10">
                             <p className="text-sm sm:text-base text-gray-500 italic">
-                                "Code is like humor. When you have to explain it, it's bad." - Cory House
+                                "I build systems that are secure, scalable, and engineered for real-world production."
                             </p>
                         </div>
 
@@ -228,19 +224,19 @@ export default function About() {
                         <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
                             <div className="text-center">
                                 <h4 className="text-3xl sm:text-4xl font-bold text-purple-400 mb-2">
-                                    <Counter end={12} />+
+                                    <Counter end={3} duration={1} />+
                                 </h4>
                                 <p className="text-gray-400 text-xs sm:text-sm">Projects</p>
                             </div>
                             <div className="text-center">
                                 <h4 className="text-3xl sm:text-4xl font-bold text-cyan-400 mb-2">
-                                    <Counter end={3} />+
+                                    <Counter end={1} duration={1} />+
                                 </h4>
                                 <p className="text-gray-400 text-xs sm:text-sm">Years Learning</p>
                             </div>
                             <div className="text-center">
                                 <h4 className="text-3xl sm:text-4xl font-bold text-pink-400 mb-2">
-                                    <Counter end={8} />+
+                                    <Counter end={16} duration={1} />+
                                 </h4>
                                 <p className="text-gray-400 text-xs sm:text-sm">Technologies</p>
                             </div>

@@ -105,7 +105,7 @@ export default function Hero() {
                         transition={{ delay: 1 }}
                         className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed px-4 lg:px-0 text-zinc-600 dark:text-zinc-400"
                     >
-                        Building modern web apps, AI tools, and interactive experiences.
+                        Building Scalable Web Apps & AI Solutions
                     </motion.p>
 
                     {/* BUTTONS */}
