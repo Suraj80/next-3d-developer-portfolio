@@ -281,12 +281,12 @@ export default function Experience() {
             {/* Optimized Background Glows */}
             <motion.div
                 style={{ y: glow1Y }}
-                className="absolute top-1/3 left-1/3 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[120px] rounded-full pointer-events-none will-change-transform"
+                className="absolute top-1/3 left-1/3 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <motion.div
                 style={{ y: glow2Y }}
-                className="absolute bottom-1/3 right-1/3 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[120px] rounded-full pointer-events-none will-change-transform"
+                className="absolute bottom-1/3 right-1/3 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">

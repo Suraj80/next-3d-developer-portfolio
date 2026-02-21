@@ -26,8 +26,8 @@ export function useProjects() {
         fetchProjects();
     }, []);
 
-    const featuredProject = projects.find((p) => p.featured);
+    const featuredProjects = projects.filter((p) => p.featured);
     const otherProjects = projects.filter((p) => !p.featured);
 
-    return { projects, featuredProject, otherProjects, loading };
+    return { projects, featuredProjects, otherProjects, loading };
 }

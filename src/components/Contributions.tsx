@@ -178,13 +178,13 @@ export default function Contributions() {
             {/* Subtle Background Glow 1 - Purple */}
             <motion.div
                 style={{ y: glow1Y, opacity: glow1Opacity }}
-                className="absolute top-1/3 left-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                className="absolute top-1/3 left-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             {/* Subtle Background Glow 2 - Cyan */}
             <motion.div
                 style={{ y: glow2Y, opacity: glow2Opacity }}
-                className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <div className="max-w-7xl mx-auto relative z-10">
