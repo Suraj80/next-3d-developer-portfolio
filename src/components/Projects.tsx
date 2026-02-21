@@ -26,7 +26,7 @@ export default function Projects() {
             {/* Background Glow with parallax */}
             <motion.div
                 style={{ y: glowY }}
-                className="absolute top-1/2 left-1/2 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-cyan-500/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
+                className="absolute top-1/2 left-1/2 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-cyan-500/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <div className="max-w-7xl w-full mx-auto relative z-10 w-full pl-0 sm:pl-0 md:pl-0">
@@ -55,7 +55,7 @@ export default function Projects() {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 viewport={{ once: true, margin: "-100px" }}
-                                className="relative mb-32 rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl"
+                                className="relative mb-32 rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm md:backdrop-blur-xl"
                             >
                                 <div className="grid md:grid-cols-2 gap-0">
 
@@ -132,7 +132,7 @@ export default function Projects() {
                                     transition={{ duration: 0.4, delay: index * 0.06 }}
                                     viewport={{ once: true, margin: "-100px" }}
                                     whileHover={{ scale: 1.03 }}
-                                    className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl group"
+                                    className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm md:backdrop-blur-xl group"
                                 >
                                     {/* Image */}
                                     <div className="relative h-48">

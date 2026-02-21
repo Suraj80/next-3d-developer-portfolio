@@ -121,7 +121,7 @@ const ExperienceCard = memo(({
                         opacity: isActive ? 0.4 : 0,
                     }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-xl pointer-events-none will-change-opacity"
+                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-md md:blur-xl pointer-events-none will-change-opacity"
                 />
 
                 {/* Gradient Border Container - Simplified */}
@@ -130,12 +130,12 @@ const ExperienceCard = memo(({
                     : "bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30"
                     }`}>
                     {/* Card Content */}
-                    <div className="relative p-6 sm:p-8 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10">
+                    <div className="relative p-6 sm:p-8 rounded-2xl bg-black/60 backdrop-blur-sm md:backdrop-blur-xl border border-white/10">
                         {/* Header */}
                         <div className="flex items-start gap-4 mb-4">
                             {/* Logo */}
                             <div className="relative flex-shrink-0">
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-lg opacity-40 rounded-xl" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-md md:blur-lg opacity-30 md:opacity-40 rounded-xl" />
                                 <div className="relative w-14 h-14 rounded-xl bg-white flex items-center justify-center p-2 border border-white/20 overflow-hidden">
                                     <Image
                                         src={experience.logo}
@@ -281,12 +281,12 @@ export default function Experience() {
             {/* Optimized Background Glows */}
             <motion.div
                 style={{ y: glow1Y }}
-                className="absolute top-1/3 left-1/3 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
+                className="absolute top-1/3 left-1/3 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <motion.div
                 style={{ y: glow2Y }}
-                className="absolute bottom-1/3 right-1/3 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
+                className="absolute bottom-1/3 right-1/3 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">

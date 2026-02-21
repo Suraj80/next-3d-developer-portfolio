@@ -27,11 +27,11 @@ export default function Footer() {
             {/* Parallax Background Glows */}
             <motion.div
                 style={{ y: glow1Y }}
-                className="absolute top-1/2 left-1/4 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                className="absolute top-1/2 left-1/4 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
             <motion.div
                 style={{ y: glow2Y }}
-                className="absolute bottom-1/2 right-1/4 w-[500px] h-[500px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                className="absolute bottom-1/2 right-1/4 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             <div className="max-w-7xl mx-auto relative z-10">

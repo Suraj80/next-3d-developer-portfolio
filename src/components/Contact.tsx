@@ -29,13 +29,13 @@ export default function Contact() {
             {/* Background Glow 1 - Purple */}
             <motion.div
                 style={{ y: glow1Y }}
-                className="absolute top-1/4 left-1/4 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                className="absolute top-1/4 left-1/4 w-[250px] h-[250px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             {/* Background Glow 2 - Cyan */}
             <motion.div
                 style={{ y: glow2Y }}
-                className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                className="absolute bottom-1/4 right-1/4 w-[250px] h-[250px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
             />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">
@@ -93,7 +93,7 @@ export default function Contact() {
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="relative">
-                                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-lg opacity-50 rounded-xl" />
+                                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-md md:blur-lg opacity-50 rounded-xl" />
                                         <div className="relative w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 flex items-center justify-center border border-white/20">
                                             <FiMail className="text-purple-400" size={20} />
                                         </div>
@@ -114,7 +114,7 @@ export default function Contact() {
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="relative">
-                                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-400 blur-lg opacity-50 rounded-xl" />
+                                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-400 blur-md md:blur-lg opacity-50 rounded-xl" />
                                         <div className="relative w-12 h-12 rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 flex items-center justify-center border border-white/20">
                                             <FiMapPin className="text-cyan-400" size={20} />
                                         </div>
@@ -167,7 +167,7 @@ export default function Contact() {
                         {/* Gradient Border Container */}
                         <div className="relative p-[1px] rounded-3xl bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30">
                             {/* Form Card */}
-                            <div className="relative p-8 sm:p-10 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10">
+                            <div className="relative p-8 sm:p-10 rounded-3xl bg-black/60 backdrop-blur-sm md:backdrop-blur-xl border border-white/10">
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     {/* Name Input */}
                                     <div className="relative group">

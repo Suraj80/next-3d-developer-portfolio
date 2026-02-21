@@ -29,12 +29,12 @@ export default function TechStack() {
                     {/* Background Glow */}
                     <motion.div
                         style={{ y: glow1Y }}
-                        className="absolute top-1/4 left-1/4 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                        className="absolute top-1/4 left-1/4 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
                     />
 
                     <motion.div
                         style={{ y: glow2Y }}
-                        className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform"
+                        className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
                     />
 
                     <div className="max-w-7xl mx-auto relative z-10">
@@ -113,7 +113,7 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
             <motion.div
                 animate={{ opacity: [0.1, 0.25, 0.1] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 blur-2xl opacity-20"
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 blur-md md:blur-2xl opacity-20"
             />
 
             {/* Gradient Border */}
@@ -128,7 +128,7 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
                 onMouseLeave={resetTilt}
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 6, repeat: Infinity }}
-                className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(139,92,246,0.3)] min-h-[160px]"
+                className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm md:backdrop-blur-lg border border-white/10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(139,92,246,0.3)] min-h-[160px]"
             >
                 <div className="text-5xl mb-4 transition duration-300 drop-shadow-md group-hover:scale-110">
                     {tech.icon}

@@ -71,7 +71,7 @@ function ContributionCard({
                 initial={{ opacity: 0 }}
                 whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
-                className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-500/20 via-cyan-500/20 to-pink-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-500/20 via-cyan-500/20 to-pink-500/20 blur-md md:blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             />
 
             {/* Card Container with Gradient Border */}
@@ -81,7 +81,7 @@ function ContributionCard({
                 className="relative h-full p-[1px] rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent group-hover:from-purple-500/30 group-hover:via-cyan-500/20 group-hover:to-pink-500/30 transition-all duration-500"
             >
                 {/* Glassmorphism Card */}
-                <div className="relative h-full p-7 sm:p-8 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/10 group-hover:border-white/20 group-hover:bg-black/50 transition-all duration-500 flex flex-col">
+                <div className="relative h-full p-7 sm:p-8 rounded-3xl bg-black/40 backdrop-blur-sm md:backdrop-blur-xl border border-white/10 group-hover:border-white/20 group-hover:bg-black/50 transition-all duration-500 flex flex-col">
 
                     {/* Header */}
                     <div className="flex items-start justify-between gap-4 mb-4">
@@ -178,13 +178,13 @@ export default function Contributions() {
             {/* Subtle Background Glow 1 - Purple */}
             <motion.div
                 style={{ y: glow1Y, opacity: glow1Opacity }}
-                className="absolute top-1/3 left-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
+                className="absolute top-1/3 left-1/4 w-[250px] h-[250px] sm:w-[600px] sm:h-[600px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             {/* Subtle Background Glow 2 - Cyan */}
             <motion.div
                 style={{ y: glow2Y, opacity: glow2Opacity }}
-                className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
+                className="absolute bottom-1/3 right-1/4 w-[250px] h-[250px] sm:w-[600px] sm:h-[600px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
             />
 
             <div className="max-w-7xl mx-auto relative z-10">
