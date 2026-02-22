@@ -66,6 +66,7 @@ export default function Projects() {
                                             alt={featured.title}
                                             fill
                                             className="object-cover"
+                                            sizes="(max-width: 768px) 100vw, 50vw"
                                         />
                                     </div>
 
@@ -141,6 +142,8 @@ export default function Projects() {
                                             alt={project.title}
                                             fill
                                             className="object-cover group-hover:scale-110 transition duration-500"
+                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                            loading="lazy"
                                         />
                                     </div>
 

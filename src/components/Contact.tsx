@@ -1,11 +1,10 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { FiMail, FiMapPin, FiSend } from "react-icons/fi";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useContactForm } from "@/hooks/useContactForm";
-import { useParallax } from "@/hooks/useParallax";
 
 export default function Contact() {
     const {
@@ -17,26 +16,14 @@ export default function Contact() {
         handleSubmit,
     } = useContactForm();
 
-    const sectionRef = useRef<HTMLElement>(null);
-    const { glow1Y, glow2Y } = useParallax(sectionRef);
-
     return (
         <section
-            ref={sectionRef}
             id="contact"
             className="relative min-h-screen flex items-center justify-center py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 text-white overflow-hidden"
         >
-            {/* Background Glow 1 - Purple */}
-            <motion.div
-                style={{ y: glow1Y }}
-                className="absolute top-1/4 left-1/4 w-[250px] h-[250px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
-            />
-
-            {/* Background Glow 2 - Cyan */}
-            <motion.div
-                style={{ y: glow2Y }}
-                className="absolute bottom-1/4 right-1/4 w-[250px] h-[250px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
-            />
+            {/* Static Background Glows — no scroll listener */}
+            <div className="absolute top-1/4 left-1/4 w-[250px] h-[250px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-1/4 right-1/4 w-[250px] h-[250px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none" />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">
                 {/* Title */}
@@ -89,7 +76,7 @@ export default function Contact() {
                             {/* Email */}
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
-                                className="group p-5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                                className="group p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/50 transition-all duration-300"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="relative">
@@ -110,7 +97,7 @@ export default function Contact() {
                             {/* Location */}
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
-                                className="group p-5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-cyan-500/50 transition-all duration-300"
+                                className="group p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-500/50 transition-all duration-300"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="relative">
@@ -137,17 +124,11 @@ export default function Contact() {
                             viewport={{ once: true, margin: "-100px" }}
                             className="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/30"
                         >
-                            <motion.div
-                                animate={{
-                                    scale: [1, 1.2, 1],
-                                    opacity: [0.5, 1, 0.5],
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                }}
-                                className="w-3 h-3 rounded-full bg-green-400 shadow-lg shadow-green-400/50"
-                            />
+                            {/* Availability dot — CSS animate-ping (compositor thread, zero JS) */}
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-400" />
+                            </span>
                             <p className="text-green-400 font-medium text-sm sm:text-base">
                                 Currently Available for Projects
                             </p>
@@ -166,8 +147,8 @@ export default function Contact() {
                     >
                         {/* Gradient Border Container */}
                         <div className="relative p-[1px] rounded-3xl bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30">
-                            {/* Form Card */}
-                            <div className="relative p-8 sm:p-10 rounded-3xl bg-black/60 backdrop-blur-sm md:backdrop-blur-xl border border-white/10">
+                            {/* Form Card — solid bg, no backdrop-blur (GPU cost drops to zero) */}
+                            <div className="relative p-8 sm:p-10 rounded-3xl bg-black/80 border border-white/10">
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     {/* Name Input */}
                                     <div className="relative group">
@@ -211,30 +192,12 @@ export default function Contact() {
                                         <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-pink-500/0 to-pink-500/0 peer-focus:from-pink-500/10 peer-focus:to-cyan-500/10 transition-all duration-300 pointer-events-none" />
                                     </div>
 
-                                    {/* Submit Button */}
-                                    <motion.button
+                                    {/* Submit Button — CSS gradient button, shimmer removed */}
+                                    <button
                                         type="submit"
                                         disabled={loading}
-                                        whileHover={{ scale: loading ? 1 : 1.02 }}
-                                        whileTap={{ scale: loading ? 1 : 0.98 }}
-                                        className="relative w-full py-4 rounded-xl font-semibold text-white overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="relative w-full py-4 rounded-xl font-semibold text-white overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 hover:from-purple-600 hover:via-cyan-600 hover:to-pink-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                                     >
-                                        {/* Animated Gradient Background */}
-                                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 group-hover:from-purple-600 group-hover:via-cyan-600 group-hover:to-pink-600 transition-all duration-300" />
-
-                                        {/* Shimmer Effect */}
-                                        <motion.div
-                                            animate={{
-                                                x: ["-100%", "100%"],
-                                            }}
-                                            transition={{
-                                                duration: 2,
-                                                repeat: Infinity,
-                                                ease: "linear",
-                                            }}
-                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                                        />
-
                                         {/* Button Content */}
                                         <span className="relative flex items-center justify-center gap-2">
                                             {loading ? (
@@ -257,7 +220,7 @@ export default function Contact() {
                                                 </>
                                             )}
                                         </span>
-                                    </motion.button>
+                                    </button>
 
                                     {/* Success Message */}
                                     {success && (

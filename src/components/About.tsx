@@ -36,6 +36,7 @@ function Counter({ end, duration = 2 }: { end: number; duration?: number }) {
 
 /* -----------------------------
    Floating Tech Icon Component
+   Uses pure CSS animation — zero JS cost on compositor thread
 ------------------------------ */
 interface FloatingIconProps {
     icon: string;
@@ -45,27 +46,14 @@ interface FloatingIconProps {
 
 function FloatingIcon({ icon, delay, position }: FloatingIconProps) {
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            animate={{
-                y: [0, -15, 0],
-                rotate: [0, 5, -5, 0],
-            }}
-            transition={{
-                opacity: { delay: delay + 0.5, duration: 0.5 },
-                scale: { delay: delay + 0.5, duration: 0.5 },
-                y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay },
-                rotate: { duration: 4, repeat: Infinity, ease: "easeInOut", delay },
-            }}
-            className="absolute hidden sm:block"
-            style={position}
+        <div
+            className="absolute hidden sm:block about-float-icon"
+            style={{ ...position, animationDelay: `${delay}s` }}
         >
             <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-2xl lg:text-3xl shadow-lg hover:scale-110 transition-transform">
                 {icon}
             </div>
-        </motion.div>
+        </div>
     );
 }
 
@@ -141,16 +129,12 @@ export default function About() {
                         viewport={{ once: true, margin: "-100px" }}
                         className="relative flex justify-center lg:justify-end perspective-[1000px]"
                     >
-                        {/* Animated Glow */}
-                        <motion.div
-                            animate={{ scale: [1, 1.1, 1] }}
-                            transition={{ duration: 6, repeat: Infinity }}
-                            className="absolute w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full blur-3xl opacity-30"
-                        />
+                        {/* Static Glow — removed infinite scale animation, compositor-free */}
+                        <div className="absolute w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full blur-3xl opacity-20" />
 
                         {/* Container for image and floating icons */}
                         <div className="relative">
-                            {/* Floating Tech Icons */}
+                            {/* Floating Tech Icons — pure CSS @keyframes (no JS) */}
                             <FloatingIcon icon="⚛️" delay={0} position={{ top: "-10%", left: "-15%" }} />
                             <FloatingIcon icon="▲" delay={0.5} position={{ top: "5%", right: "-10%" }} />
                             <FloatingIcon icon="📘" delay={1} position={{ bottom: "15%", left: "-20%" }} />
@@ -158,12 +142,10 @@ export default function About() {
                             <FloatingIcon icon="🟢" delay={2} position={{ top: "40%", left: "-25%" }} />
                             <FloatingIcon icon="🎨" delay={2.5} position={{ top: "50%", right: "-20%" }} />
 
-                            {/* Animated Gradient Border */}
+                            {/* Animated Gradient Border — CSS spin, no JS */}
                             <div className="relative p-1 rounded-3xl">
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                                    className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 opacity-75"
+                                <div
+                                    className="about-border-spin absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 opacity-75"
                                     style={{
                                         filter: isHovered ? "blur(8px)" : "blur(4px)",
                                     }}
@@ -208,7 +190,7 @@ export default function About() {
                         </p>
 
                         <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed">
-                            I’ve engineered secure authentication systems using <span className="text-pink-400 font-medium">Keycloak (SSO, SLO, 2FA, RBAC)</span>,
+                            I've engineered secure authentication systems using <span className="text-pink-400 font-medium">Keycloak (SSO, SLO, 2FA, RBAC)</span>,
                             built AI-powered applications with <span className="text-cyan-400 font-medium">LangChain, OpenAI, and FAISS</span>,
                             and architected scalable e-commerce platforms with Redis caching, payment integrations,
                             and CI/CD deployments on AWS.

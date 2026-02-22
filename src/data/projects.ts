@@ -15,7 +15,7 @@ export const projects: Project[] = [
         title: "Generative AI News Research Tool",
         description:
             "Full-stack RAG application for analyzing finance news via URL ingestion and natural-language queries. Engineered with LangChain, OpenAI embeddings, and FAISS vector index for real-time semantic search and context-aware responses.",
-        image: "/d.png",
+        image: "/project1_hero.png",
         tech: ["React", "LangChain", "OpenAI", "Python", "FAISS"],
         live: "#",
         github: "#",

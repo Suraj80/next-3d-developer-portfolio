@@ -1,38 +1,20 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { FiGithub, FiMail, FiLinkedin, FiTwitter } from "react-icons/fi";
-import { useRef } from "react";
 
 export default function Footer() {
-    const sectionRef = useRef<HTMLElement>(null);
-
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"],
-    });
-
-    const glow1Y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-    const glow2Y = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
         <footer
-            ref={sectionRef}
             className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 text-white overflow-hidden border-t border-white/10"
         >
-            {/* Parallax Background Glows */}
-            <motion.div
-                style={{ y: glow1Y }}
-                className="absolute top-1/2 left-1/4 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
-            />
-            <motion.div
-                style={{ y: glow2Y }}
-                className="absolute bottom-1/2 right-1/4 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[50px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
-            />
+            {/* Static Background Glows — no scroll listener */}
+            <div className="absolute top-1/2 left-1/4 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/15 blur-[50px] md:blur-[80px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-1/2 right-1/4 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] translate-x-1/2 translate-y-1/2 bg-cyan-600/15 blur-[50px] md:blur-[80px] rounded-full pointer-events-none" />
 
             <div className="max-w-7xl mx-auto relative z-10">
                 {/* Top Section */}

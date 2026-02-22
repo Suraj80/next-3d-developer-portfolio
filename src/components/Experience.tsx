@@ -6,6 +6,7 @@ import {
     useTransform,
     useInView,
 } from "framer-motion";
+// Note: useScroll + useTransform retained for the timeline progress animation
 import { useRef, useState, useEffect, memo, useMemo, useCallback } from "react";
 import Image from "next/image";
 
@@ -94,34 +95,19 @@ const ExperienceCard = memo(({
                         <div className="absolute inset-[5px] rounded-full bg-gradient-to-r from-purple-400 to-cyan-400" />
                     </div>
 
-                    {/* Pulse for Current Role - Optimized */}
+                    {/* Pulse for Current Role — CSS animate-ping (compositor thread, zero JS) */}
                     {isCurrent && (
-                        <motion.div
-                            animate={{
-                                scale: [1, 1.8, 1],
-                                opacity: [0.5, 0, 0.5],
-                            }}
-                            transition={{
-                                duration: 2.5,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                            className="absolute inset-0 rounded-full bg-purple-400/30 will-change-transform"
-                        />
+                        <span className="absolute inset-0 rounded-full bg-purple-400/30 animate-ping" />
                     )}
                 </div>
             </div>
 
             {/* Experience Card Container */}
             <div className={cardClassName}>
-                {/* Floating Glow - Optimized */}
-                <motion.div
-                    initial={false}
-                    animate={{
-                        opacity: isActive ? 0.4 : 0,
-                    }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-md md:blur-xl pointer-events-none will-change-opacity"
+                {/* Card Glow — plain div with CSS transition (no JS animation node) */}
+                <div
+                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-md pointer-events-none transition-opacity duration-400"
+                    style={{ opacity: isActive ? 0.4 : 0 }}
                 />
 
                 {/* Gradient Border Container - Simplified */}
@@ -130,7 +116,7 @@ const ExperienceCard = memo(({
                     : "bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30"
                     }`}>
                     {/* Card Content */}
-                    <div className="relative p-6 sm:p-8 rounded-2xl bg-black/60 backdrop-blur-sm md:backdrop-blur-xl border border-white/10">
+                    <div className="relative p-6 sm:p-8 rounded-2xl bg-black/80 border border-white/10">
                         {/* Header */}
                         <div className="flex items-start gap-4 mb-4">
                             {/* Logo */}
@@ -181,21 +167,13 @@ const ExperienceCard = memo(({
                         <div className="pt-4 border-t border-white/10">
                             <ul className="space-y-3">
                                 {experience.description.map((point, i) => (
-                                    <motion.li
+                                    <li
                                         key={point}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        transition={{
-                                            delay: i * 0.08,
-                                            duration: 0.3,
-                                            ease: "easeOut"
-                                        }}
-                                        viewport={{ once: true }}
                                         className="flex items-start gap-3 text-sm sm:text-base text-gray-300"
                                     >
                                         <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-cyan-400 mt-2 flex-shrink-0" />
                                         <span>{point}</span>
-                                    </motion.li>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
@@ -219,15 +197,7 @@ export default function Experience() {
     const timelineRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    /* Parallax Background - Optimized */
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"],
-    });
-
-    const glow1Y = useTransform(scrollYProgress, [0, 1], [120, -120]);
-    const glow2Y = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
+    /* Parallax Background - uses fixed positions only, no scroll listener needed */
     /* Timeline Progress - Optimized */
     const { scrollYProgress: timelineProgress } = useScroll({
         target: timelineRef,
@@ -236,7 +206,7 @@ export default function Experience() {
 
     const lineHeight = useTransform(timelineProgress, [0, 1], ["0%", "100%"]);
 
-    /* Viewport Detection - Optimized with useCallback */
+    /* Viewport Detection — single shared IntersectionObserver for all cards */
     const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
@@ -249,27 +219,18 @@ export default function Experience() {
     }, []);
 
     useEffect(() => {
-        const observers: IntersectionObserver[] = [];
         const observerOptions = {
             threshold: [0.5],
             rootMargin: "-15% 0px -15% 0px",
         };
 
+        // Single observer for all cards — avoids N separate observer instances
+        const observer = new IntersectionObserver(handleIntersection, observerOptions);
         cardRefs.current.forEach((cardRef) => {
-            if (!cardRef) return;
-
-            const observer = new IntersectionObserver(
-                handleIntersection,
-                observerOptions
-            );
-
-            observer.observe(cardRef);
-            observers.push(observer);
+            if (cardRef) observer.observe(cardRef);
         });
 
-        return () => {
-            observers.forEach((observer) => observer.disconnect());
-        };
+        return () => observer.disconnect();
     }, [handleIntersection]);
 
     return (
@@ -278,16 +239,10 @@ export default function Experience() {
             id="experience"
             className="relative min-h-screen flex items-center justify-center py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 text-white overflow-hidden"
         >
-            {/* Optimized Background Glows */}
-            <motion.div
-                style={{ y: glow1Y }}
-                className="absolute top-1/3 left-1/3 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
-            />
+            {/* Static Background Glows — no scroll listener, static positioning */}
+            <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none -z-10" />
 
-            <motion.div
-                style={{ y: glow2Y }}
-                className="absolute bottom-1/3 right-1/3 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform -z-10"
-            />
+            <div className="absolute bottom-1/3 right-1/3 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] lg:w-[900px] lg:h-[900px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none -z-10" />
 
             <div className="max-w-7xl w-full mx-auto relative z-10">
                 {/* Title */}
