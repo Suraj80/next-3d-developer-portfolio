@@ -5,7 +5,7 @@ export const projects: Project[] = [
         title: "EduProjectStore",
         description:
             "Scalable full-stack e-commerce platform for educational projects. Architected with a Laravel Blade storefront, React/TypeScript admin dashboard, Razorpay integration, Redis caching, and automated AWS CI/CD pipelines.",
-        image: "/project2_hero.png",
+        image: "/project2_hero.webp",
         tech: ["React", "TypeScript", "Laravel", "MySQL", "Redis"],
         live: "#",
         github: "#",
@@ -15,7 +15,7 @@ export const projects: Project[] = [
         title: "Generative AI News Research Tool",
         description:
             "Full-stack RAG application for analyzing finance news via URL ingestion and natural-language queries. Engineered with LangChain, OpenAI embeddings, and FAISS vector index for real-time semantic search and context-aware responses.",
-        image: "/project1_hero.png",
+        image: "/project1_hero.webp",
         tech: ["React", "LangChain", "OpenAI", "Python", "FAISS"],
         live: "#",
         github: "#",

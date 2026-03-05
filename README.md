@@ -4,8 +4,8 @@ A modern, highly interactive, and performance-optimized 3D developer portfolio b
 
 Built by **Suraj Jangavali** — Full-Stack Software Engineer.
 
-![Portfolio Preview](./public/img1.png)
-![Portfolio Preview](./public/img2.png)
+![Portfolio Preview](./public/img1.webp)
+![Portfolio Preview](./public/img2.webp)
 
 ## 🚀 Features
 

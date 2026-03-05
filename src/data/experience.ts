@@ -4,7 +4,7 @@ export const experiences: ExperienceItem[] = [
     {
         role: "Software Developer Intern",
         company: "Nantech Solutions",
-        logo: "/nantech_logo1.png",
+        logo: "/nantech_logo1.webp",
         startYear: 2025,
         endYear: 2025,
         description: [
@@ -18,7 +18,7 @@ export const experiences: ExperienceItem[] = [
     {
         role: "Software Engineer",
         company: "Chromosis Technologies",
-        logo: "/chromosis_logo.png", // replace with actual logo file
+        logo: "/chromosis_logo.webp", // replace with actual logo file
         startYear: 2025,
         description: [
             "Built and delivered full-stack web applications using React (TypeScript), Tailwind CSS, Laravel, and MySQL across production modules.",

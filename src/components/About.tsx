@@ -163,7 +163,7 @@ export default function About() {
                                         className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden backdrop-blur-lg bg-white/5 transition-all duration-200 ease-out shadow-2xl shadow-purple-500/20"
                                     >
                                         <Image
-                                            src="/profile.jpg"
+                                            src="/profile.webp"
                                             alt="Profile"
                                             fill
                                             sizes="(max-width: 640px) 288px, (max-width: 1024px) 320px, 384px"
