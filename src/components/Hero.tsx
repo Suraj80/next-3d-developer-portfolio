@@ -60,21 +60,8 @@ export default function Hero() {
 
             <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center z-10">
 
-                {/* LEFT CONTENT */}
-                <div className="text-center lg:text-left flex flex-col items-center lg:items-start space-y-4 sm:space-y-6">
-
-                    {/* ✅ ROBOT ABOVE NAME ONLY ON MOBILE */}
-                    <motion.div
-                        style={{ y: robotY }}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1 }}
-                        className="block lg:hidden w-full flex justify-center -mb-32 sm:-mb-18"
-                    >
-                        <div className="w-full max-w-[320px]">
-                            <SplineRobot />
-                        </div>
-                    </motion.div>
+                {/* TEXT — order-2 on mobile (below robot), first column on lg */}
+                <div className="order-2 lg:order-1 text-center lg:text-left flex flex-col items-center lg:items-start space-y-4 sm:space-y-6">
 
                     {/* NAME */}
                     <motion.h1
@@ -131,15 +118,17 @@ export default function Hero() {
                     </motion.div>
                 </div>
 
-                {/* ✅ ROBOT ON RIGHT ONLY DESKTOP */}
+                {/* Single Spline instance: order-1 on mobile (above text), right column on lg — avoids loading two WebGL scenes */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     style={{ y: robotY }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
-                    className="hidden lg:flex justify-end w-full"
+                    transition={{ duration: 1, delay: 0.2 }}
+                    className="order-1 lg:order-2 w-full flex justify-center lg:justify-end -mb-32 sm:-mb-18 lg:mb-0"
                 >
-                    <SplineRobot />
+                    <div className="w-full max-w-[320px] lg:max-w-none lg:w-full">
+                        <SplineRobot />
+                    </div>
                 </motion.div>
 
             </div>

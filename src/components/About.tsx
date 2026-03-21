@@ -168,6 +168,7 @@ export default function About() {
                                             fill
                                             sizes="(max-width: 640px) 288px, (max-width: 1024px) 320px, 384px"
                                             className="object-cover"
+                                            priority
                                         />
                                     </div>
                                 </div>

@@ -134,6 +134,7 @@ const ExperienceCard = memo(({
                                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 blur-md md:blur-lg opacity-30 md:opacity-40 rounded-xl" />
                                 <div className="relative w-14 h-14 rounded-xl bg-white flex items-center justify-center p-2 border border-white/20 overflow-hidden">
                                     <Image
+                                        key={experience.logo}
                                         src={experience.logo}
                                         alt={experience.company}
                                         fill
@@ -287,7 +288,7 @@ export default function Experience() {
                     <div className="space-y-16 sm:space-y-20 lg:space-y-24">
                         {experiences.map((experience, index) => (
                             <div
-                                key={`experience-${index}`}
+                                key={experience.logo}
                                 ref={(el) => {
                                     cardRefs.current[index] = el;
                                 }}
