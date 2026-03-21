@@ -191,7 +191,7 @@ ExperienceCard.displayName = "ExperienceCard";
 /* ============================= */
 
 export default function Experience() {
-    const { experiences, loading } = useExperience();
+    const { experiences } = useExperience();
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const sectionRef = useRef<HTMLElement>(null);
     const timelineRef = useRef<HTMLDivElement>(null);
@@ -231,7 +231,7 @@ export default function Experience() {
         });
 
         return () => observer.disconnect();
-    }, [handleIntersection]);
+    }, [handleIntersection, experiences]);
 
     return (
         <section

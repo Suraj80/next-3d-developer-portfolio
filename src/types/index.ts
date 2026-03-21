@@ -1,7 +1,10 @@
 export type Project = {
     title: string;
     description: string;
+    /** Hero / large-screen image */
     image: string;
+    /** Optional smaller crop for mobile & tablet; `image` used from `lg` breakpoint up */
+    imageMobile?: string;
     tech: string[];
     live?: string;
     github?: string;

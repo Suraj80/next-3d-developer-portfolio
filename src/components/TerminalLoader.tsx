@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import useAudioUnlock from "@/hooks/useAudioUnlock";
 
 import { TERMINAL_LINES as LINES } from "@/data/terminal";
 
@@ -11,49 +10,31 @@ export default function TerminalLoader({
 }: {
     children: ReactNode;
 }) {
-    const audioUnlocked = useAudioUnlock();
-
     const [visibleLines, setVisibleLines] = useState<string[]>([]);
     const [currentText, setCurrentText] = useState("");
     const [lineIndex, setLineIndex] = useState(0);
     const [finished, setFinished] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
     const [skipBoot, setSkipBoot] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
+    const [bootReady, setBootReady] = useState(false);
 
-    const typeSound = useRef<HTMLAudioElement | null>(null);
-    const bootSound = useRef<HTMLAudioElement | null>(null);
-
-    // preload sounds once, and check session storage
     useEffect(() => {
-        typeSound.current = new Audio("/sounds/type.wav");
-        bootSound.current = new Audio("/sounds/boot.mp3");
-
-        if (typeSound.current) typeSound.current.volume = 0.25;
-        if (bootSound.current) bootSound.current.volume = 0.4;
-
-        // Check if boot sequence was already completed in this session
         if (sessionStorage.getItem("bootSequenceComplete")) {
             setSkipBoot(true);
-            setFinished(true); // INSTANTLY allow Hero section to mount
+            setFinished(true);
             setHeroVisible(true);
         }
-
-        setIsMounted(true);
+        setBootReady(true);
     }, []);
 
-    // typing logic
     useEffect(() => {
-        if (!audioUnlocked || skipBoot) return;
+        if (!bootReady || skipBoot) return;
 
         if (lineIndex >= LINES.length) {
-            if (bootSound.current) {
-                bootSound.current.play().catch(() => { });
-            }
             setTimeout(() => {
                 setFinished(true);
                 sessionStorage.setItem("bootSequenceComplete", "true");
-                setHeroVisible(true); // Instantly load Hero without waiting for Matrix rain
+                setHeroVisible(true);
             }, 300);
             return;
         }
@@ -61,41 +42,32 @@ export default function TerminalLoader({
         const line = LINES[lineIndex];
         let charIndex = 0;
 
-        // ⚡ Slower typing on mobile for better performance
-        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
         const baseDelay = isMobile ? 15 : 10;
         const randomDelay = isMobile ? 10 : 15;
 
         const typing = setInterval(() => {
             if (charIndex < line.length) {
                 setCurrentText(line.slice(0, charIndex + 1));
-
-                if (typeSound.current) {
-                    typeSound.current.currentTime = 0;
-                    typeSound.current.play().catch(() => { });
-                }
-
                 charIndex++;
             } else {
                 clearInterval(typing);
 
                 setTimeout(() => {
-                    setVisibleLines(prev => [...prev, line]);
+                    setVisibleLines((prev) => [...prev, line]);
                     setCurrentText("");
-                    setLineIndex(prev => prev + 1);
+                    setLineIndex((prev) => prev + 1);
                 }, 100);
             }
         }, baseDelay + Math.random() * randomDelay);
 
         return () => clearInterval(typing);
-    }, [lineIndex, audioUnlocked, skipBoot]);
+    }, [lineIndex, skipBoot, bootReady]);
 
     return (
         <>
-            {/* Persistent black background prevents white flash from theme layout while transition happens */}
             <div className="fixed inset-0 -z-50 bg-black pointer-events-none" />
 
-            {/* ⚡ PERFORMANCE: Only render children when terminal is finished or near finished */}
             {(finished || skipBoot || lineIndex >= LINES.length - 1) && (
                 <motion.div
                     initial={skipBoot ? {} : { opacity: 0, scale: 1.05, filter: "blur(10px)" }}
@@ -107,7 +79,6 @@ export default function TerminalLoader({
                     transition={{ duration: 1, ease: "easeOut" }}
                     onAnimationComplete={() => {
                         if (heroVisible) {
-                            // Clear transform and filter to prevent fixed-position stacking context issues for Navbar
                             const el = document.getElementById("terminal-content-wrapper");
                             if (el) {
                                 el.style.transform = "none";
@@ -122,18 +93,8 @@ export default function TerminalLoader({
                 </motion.div>
             )}
 
-            {/* 🔒 WAIT FOR USER INTERACTION Overlay */}
-            {!audioUnlocked && !skipBoot && isMounted && (
-                <div className="fixed inset-0 z-[60] bg-black text-green-400 flex items-center justify-center font-mono cursor-pointer">
-                    <p className="animate-pulse text-lg text-center px-4">
-                        Click anywhere to start boot sequence...
-                    </p>
-                </div>
-            )}
-
-            {/* Terminal Animation Overlay */}
             <AnimatePresence>
-                {audioUnlocked && !finished && !skipBoot && (
+                {bootReady && !finished && !skipBoot && (
                     <motion.div
                         key="terminal"
                         initial={{ opacity: 1 }}
@@ -142,14 +103,12 @@ export default function TerminalLoader({
                         className="fixed inset-0 z-50 bg-black text-green-400 font-mono flex items-center justify-center"
                     >
                         <div className="w-full max-w-2xl px-6">
-                            {/* header */}
                             <div className="bg-zinc-900 rounded-t-lg px-4 py-2 flex gap-2 shadow-lg">
                                 <div className="w-3 h-3 bg-red-500 rounded-full" />
                                 <div className="w-3 h-3 bg-yellow-400 rounded-full" />
                                 <div className="w-3 h-3 bg-green-500 rounded-full" />
                             </div>
 
-                            {/* terminal */}
                             <div className="bg-black border border-zinc-800 rounded-b-lg p-5 text-sm sm:text-base shadow-2xl">
                                 {visibleLines.map((line, i) => (
                                     <div key={i}>{line}</div>

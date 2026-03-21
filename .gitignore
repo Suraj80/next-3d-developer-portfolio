@@ -44,4 +44,5 @@ next-env.d.ts
 src/components/BackgroundGrid.tsx
 Project_audit_report.md
 
-s
+MOBILE_PERFORMANCE_ANALYSIS.md
+mobile_performance_fix.md

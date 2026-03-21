@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { FiMail, FiMapPin, FiSend } from "react-icons/fi";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useContactForm } from "@/hooks/useContactForm";
@@ -202,14 +201,9 @@ export default function Contact() {
                                         <span className="relative flex items-center justify-center gap-2">
                                             {loading ? (
                                                 <>
-                                                    <motion.div
-                                                        animate={{ rotate: 360 }}
-                                                        transition={{
-                                                            duration: 1,
-                                                            repeat: Infinity,
-                                                            ease: "linear",
-                                                        }}
-                                                        className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                                                    <span
+                                                        className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                                                        aria-hidden
                                                     />
                                                     Sending...
                                                 </>

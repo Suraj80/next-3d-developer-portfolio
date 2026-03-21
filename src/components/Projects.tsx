@@ -1,11 +1,61 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import { FiExternalLink, FiGithub } from "react-icons/fi";
 
 import { useProjects } from "@/hooks/useProjects";
+import type { Project } from "@/types";
+
+function ProjectCoverImage({
+    project,
+    className,
+    sizes,
+    priority,
+    loading,
+}: {
+    project: Project;
+    className: string;
+    sizes: string;
+    priority?: boolean;
+    loading?: "lazy" | "eager";
+}) {
+    if (project.imageMobile) {
+        return (
+            <>
+                <Image
+                    src={project.imageMobile}
+                    alt={project.title}
+                    fill
+                    className={`${className} lg:hidden`}
+                    sizes={sizes}
+                    priority={priority}
+                    loading={loading}
+                />
+                <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className={`${className} hidden lg:block`}
+                    sizes={sizes}
+                    priority={priority}
+                    loading={loading}
+                />
+            </>
+        );
+    }
+    return (
+        <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className={className}
+            sizes={sizes}
+            priority={priority}
+            loading={loading}
+        />
+    );
+}
 
 export default function Projects() {
     const { featuredProjects, otherProjects: others, loading } = useProjects();
@@ -61,12 +111,10 @@ export default function Projects() {
 
                                     {/* Image */}
                                     <div className="relative h-[350px] md:h-full">
-                                        <Image
-                                            src={featured.image}
-                                            alt={featured.title}
-                                            fill
+                                        <ProjectCoverImage
+                                            project={featured}
                                             className="object-cover"
-                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            sizes="(max-width: 1024px) 100vw, 50vw"
                                         />
                                     </div>
 
@@ -92,29 +140,32 @@ export default function Projects() {
                                             ))}
                                         </div>
 
-                                        {/* Links */}
+                                        {/* Links — Live: uncomment when ready
                                         <div className="flex gap-6">
                                             {featured.live && (
                                                 <a
                                                     href={featured.live}
                                                     target="_blank"
+                                                    rel="noopener noreferrer"
                                                     className="flex items-center gap-2 text-purple-400 hover:text-white transition"
                                                 >
                                                     <FiExternalLink size={18} />
                                                     Live
                                                 </a>
                                             )}
-                                            {/* {featured.github && (
+                                            {featured.github && (
                                         <a
                                             href={featured.github}
                                             target="_blank"
+                                            rel="noopener noreferrer"
                                             className="flex items-center gap-2 text-cyan-400 hover:text-white transition"
                                         >
                                             <FiGithub size={18} />
                                             Code
                                         </a>
-                                    )} */}
+                                    )}
                                         </div>
+                                        */}
                                     </div>
                                 </div>
                             </motion.div>
@@ -137,10 +188,8 @@ export default function Projects() {
                                 >
                                     {/* Image */}
                                     <div className="relative h-48">
-                                        <Image
-                                            src={project.image}
-                                            alt={project.title}
-                                            fill
+                                        <ProjectCoverImage
+                                            project={project}
                                             className="object-cover group-hover:scale-110 transition duration-500"
                                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                             loading="lazy"
@@ -168,15 +217,18 @@ export default function Projects() {
                                         </div>
 
                                         <div className="flex gap-4">
+                                            {/* Live — uncomment when ready
                                             {project.live && (
                                                 <a
                                                     href={project.live}
                                                     target="_blank"
+                                                    rel="noopener noreferrer"
                                                     className="text-purple-400 hover:text-white transition text-sm"
                                                 >
                                                     Live
                                                 </a>
                                             )}
+                                            */}
                                             {project.github && (
                                                 <a
                                                     href={project.github}

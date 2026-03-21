@@ -5,10 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import SplineRobot from "./SplineRobot";
 
 const roles = [
-    "Full Stack Developer",
-    "Python Enthusiast",
-    "AI Builder",
-    "Problem Solver",
+    "Full-Stack Engineer",
+    "Scalable Systems Builder",
+    "AI & Backend Specialist",
 ];
 
 export default function Hero() {
