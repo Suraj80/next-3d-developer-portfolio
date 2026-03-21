@@ -6,13 +6,24 @@ export default function CyberpunkGrid() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isNarrow =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 1024px)").matches;
+
+    // Mobile / tablet: skip perpetual rAF + parallax (major scroll/jank win)
+    if (reduceMotion || isNarrow) {
+      return;
+    }
+
     let mouseX = 0;
     let mouseY = 0;
     let currentX = 0;
     let currentY = 0;
     let animationId: number;
 
-    // Throttle helper — fires at most once per `limit` ms
     const throttle = <T extends unknown[]>(
       fn: (...args: T) => void,
       limit: number
@@ -27,7 +38,6 @@ export default function CyberpunkGrid() {
       };
     };
 
-    // ✅ Throttled to ~60fps — no longer fires on every pixel of movement
     const move = throttle((e: MouseEvent) => {
       mouseX = (e.clientX - window.innerWidth / 2) / 50;
       mouseY = (e.clientY - window.innerHeight / 2) / 50;
@@ -35,7 +45,6 @@ export default function CyberpunkGrid() {
 
     window.addEventListener("mousemove", move);
 
-    // ✅ Set will-change once so the browser promotes the layer upfront
     if (gridRef.current) {
       gridRef.current.style.willChange = "transform";
     }
@@ -44,7 +53,6 @@ export default function CyberpunkGrid() {
       currentX += (mouseX - currentX) * 0.06;
       currentY += (mouseY - currentY) * 0.06;
 
-      // ✅ translate3d triggers GPU compositing instead of CPU repaints
       if (gridRef.current) {
         gridRef.current.style.transform =
           `translate3d(${currentX}px, ${currentY}px, 0)`;
@@ -55,7 +63,6 @@ export default function CyberpunkGrid() {
 
     animationId = requestAnimationFrame(animate);
 
-    // ✅ Cancel both the rAF loop and the event listener on unmount
     return () => {
       window.removeEventListener("mousemove", move);
       cancelAnimationFrame(animationId);

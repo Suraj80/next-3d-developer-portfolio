@@ -13,6 +13,16 @@ import Image from "next/image";
 import { ExperienceItem } from "@/types";
 import { useExperience } from "@/hooks/useExperience";
 
+const MONTH_SHORT = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+] as const;
+
+function formatMonth(month: number) {
+    const i = Math.min(12, Math.max(1, month)) - 1;
+    return MONTH_SHORT[i];
+}
+
 /* ============================= */
 /*   Optimized Year Counter      */
 /* ============================= */
@@ -62,7 +72,7 @@ const ExperienceCard = memo(({
     index: number;
     isActive: boolean;
 }) => {
-    const isCurrent = !experience.endYear;
+    const isCurrent = experience.endYear == null;
     const isLeft = index % 2 === 0;
 
     // Memoize className to prevent recalculation
@@ -151,10 +161,18 @@ const ExperienceCard = memo(({
                         <div className="flex items-center gap-2 mb-4">
                             <div className="h-[1px] w-8 bg-gradient-to-r from-purple-400 to-cyan-400" />
                             <p className="text-xs sm:text-sm text-gray-400 font-mono">
+                                {formatMonth(experience.startMonth)}{" "}
                                 <YearCounter year={experience.startYear} />
                                 {" – "}
-                                {experience.endYear ? (
-                                    <YearCounter year={experience.endYear} />
+                                {experience.endYear != null ? (
+                                    experience.endMonth != null ? (
+                                        <>
+                                            {formatMonth(experience.endMonth)}{" "}
+                                            <YearCounter year={experience.endYear} />
+                                        </>
+                                    ) : (
+                                        <YearCounter year={experience.endYear} />
+                                    )
                                 ) : (
                                     <span className="text-green-400 font-semibold">
                                         Present

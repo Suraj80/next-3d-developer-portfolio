@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { NAV_SECTIONS as SECTIONS } from "@/data/navigation";
@@ -8,18 +8,25 @@ import { NAV_SECTIONS as SECTIONS } from "@/data/navigation";
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [activeSection, setActiveSection] = useState("hero");
-    const [scrollProgress, setScrollProgress] = useState(0);
+    const scrollBarRef = useRef<HTMLDivElement>(null);
 
-    // Scroll progress bar
+    // Progress bar: update DOM directly — avoids React re-render on every scroll tick
     useEffect(() => {
+        const bar = scrollBarRef.current;
         const updateProgress = () => {
             const h = document.documentElement;
-            const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
-            setScrollProgress(scrolled * 100);
+            const denom = h.scrollHeight - h.clientHeight;
+            const pct = denom > 0 ? (h.scrollTop / denom) * 100 : 0;
+            if (bar) bar.style.width = `${pct}%`;
         };
 
-        window.addEventListener("scroll", updateProgress);
-        return () => window.removeEventListener("scroll", updateProgress);
+        updateProgress();
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        window.addEventListener("resize", updateProgress, { passive: true });
+        return () => {
+            window.removeEventListener("scroll", updateProgress);
+            window.removeEventListener("resize", updateProgress);
+        };
     }, []);
 
     // Active section detection
@@ -60,9 +67,9 @@ export default function Navbar() {
     return (
         <>
             {/* SCROLL PROGRESS BAR */}
-            <motion.div
-                className="fixed top-0 left-0 h-[3px] z-50 bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500"
-                style={{ width: `${scrollProgress}%` }}
+            <div
+                ref={scrollBarRef}
+                className="fixed top-0 left-0 h-[3px] z-50 w-0 bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500"
             />
 
             {/* FLOATING NAVBAR */}

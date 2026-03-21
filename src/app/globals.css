@@ -56,3 +56,27 @@ html {
 .about-float-icon {
   animation: floatIcon 3s ease-in-out infinite;
 }
+
+/* Tech stack card glow — CSS only (replaces per-card Framer repeat:Infinity) */
+@keyframes techStackGlowPulse {
+
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.tech-stack-card-glow {
+  animation: techStackGlowPulse 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-stack-card-glow {
+    animation: none;
+    opacity: 0.45;
+  }
+}

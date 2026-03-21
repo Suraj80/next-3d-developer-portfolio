@@ -105,7 +105,7 @@ export default function Projects() {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 viewport={{ once: true, margin: "-100px" }}
-                                className="relative mb-32 rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm md:backdrop-blur-xl"
+                                className="relative mb-32 rounded-3xl overflow-hidden border border-white/10 bg-black/80"
                             >
                                 <div className="grid md:grid-cols-2 gap-0">
 
@@ -184,7 +184,7 @@ export default function Projects() {
                                     transition={{ duration: 0.4, delay: index * 0.06 }}
                                     viewport={{ once: true, margin: "-100px" }}
                                     whileHover={{ scale: 1.03 }}
-                                    className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm md:backdrop-blur-xl group"
+                                    className="relative rounded-2xl overflow-hidden border border-white/10 bg-black/80 group"
                                 >
                                     {/* Image */}
                                     <div className="relative h-48">

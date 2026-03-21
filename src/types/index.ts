@@ -15,8 +15,12 @@ export type ExperienceItem = {
     role: string;
     company: string;
     logo: string;
+    /** Calendar month 1–12 */
+    startMonth: number;
     startYear: number;
     endYear?: number;
+    /** When `endYear` is set, use end month 1–12. Omit for current role. */
+    endMonth?: number;
     description: string[];
 };
 

@@ -1,22 +1,15 @@
 "use client";
 
-import { useState, useRef } from "react";
-import {
-    motion,
-    AnimatePresence,
-} from "framer-motion";
+import { useRef, type MouseEvent } from "react";
+import { motion } from "framer-motion";
 import { Tech } from "@/types";
 import { useTechStack } from "@/hooks/useTechStack";
-import { useParallax } from "@/hooks/useParallax";
 
 export default function TechStack() {
     const { techStack, loading } = useTechStack();
-    const sectionRef = useRef<HTMLElement>(null);
-    const { glow1Y, glow2Y } = useParallax(sectionRef);
 
     return (
         <section
-            ref={sectionRef}
             id="tech-stack"
             className="relative py-28 px-6 md:px-16 text-white overflow-hidden"
         >
@@ -26,19 +19,10 @@ export default function TechStack() {
                 </div>
             ) : (
                 <>
-                    {/* Background Glow */}
-                    <motion.div
-                        style={{ y: glow1Y }}
-                        className="absolute top-1/4 left-1/4 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
-                    />
-
-                    <motion.div
-                        style={{ y: glow2Y }}
-                        className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[60px] md:blur-[80px] rounded-full pointer-events-none will-change-transform"
-                    />
+                    <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] -translate-x-1/2 -translate-y-1/2 bg-purple-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none" />
+                    <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] sm:w-[700px] sm:h-[700px] translate-x-1/2 translate-y-1/2 bg-cyan-600/20 blur-[50px] md:blur-[80px] rounded-full pointer-events-none" />
 
                     <div className="max-w-7xl mx-auto relative z-10">
-                        {/* Title */}
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -49,19 +33,11 @@ export default function TechStack() {
                             Tech Stack
                         </motion.h2>
 
-
-
-                        {/* Grid */}
-                        <motion.div
-                            layout
-                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8"
-                        >
-                            <AnimatePresence mode="sync">
-                                {techStack.map((tech, index) => (
-                                    <TechCard key={tech.name} tech={tech} index={index} />
-                                ))}
-                            </AnimatePresence>
-                        </motion.div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+                            {techStack.map((tech, index) => (
+                                <TechCard key={tech.name} tech={tech} index={index} />
+                            ))}
+                        </div>
                     </div>
                 </>
             )}
@@ -69,14 +45,10 @@ export default function TechStack() {
     );
 }
 
-/* ============================= */
-/*       Premium Tech Card       */
-/* ============================= */
-
 function TechCard({ tech, index }: { tech: Tech; index: number }) {
     const cardRef = useRef<HTMLDivElement>(null);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
         const el = cardRef.current;
         if (!el) return;
 
@@ -98,37 +70,26 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
 
     return (
         <motion.div
-            layout
             initial={{ opacity: 0, y: 12, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.95 }}
-            transition={{
-                duration: 0.3,
-                delay: index * 0.04,
-                layout: { duration: 0.25 }
-            }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.3, delay: index * 0.04 }}
+            viewport={{ once: true, margin: "-40px" }}
             className="relative group perspective-[1000px]"
         >
-            {/* Floating Glow Pulse */}
-            <motion.div
-                animate={{ opacity: [0.1, 0.25, 0.1] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 blur-md md:blur-2xl opacity-20"
+            <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 blur-md md:blur-xl opacity-20 tech-stack-card-glow pointer-events-none"
+                aria-hidden
             />
 
-            {/* Gradient Border */}
             <div className="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 opacity-0 group-hover:opacity-100 transition duration-500">
                 <div className="w-full h-full rounded-2xl bg-black" />
             </div>
 
-            {/* Card */}
-            <motion.div
+            <div
                 ref={cardRef}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={resetTilt}
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 6, repeat: Infinity }}
-                className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm md:backdrop-blur-lg border border-white/10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(139,92,246,0.3)] min-h-[160px]"
+                className="relative p-8 rounded-2xl bg-black/80 border border-white/10 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(139,92,246,0.25)] min-h-[160px]"
             >
                 <div className="text-5xl mb-4 transition duration-300 drop-shadow-md group-hover:scale-110">
                     {tech.icon}
@@ -138,11 +99,10 @@ function TechCard({ tech, index }: { tech: Tech; index: number }) {
                     {tech.name}
                 </p>
 
-                {/* Tooltip */}
                 <div className="absolute bottom-3 opacity-0 group-hover:opacity-100 transition text-xs text-purple-400 font-medium">
                     {tech.level}
                 </div>
-            </motion.div>
+            </div>
         </motion.div>
     );
 }
